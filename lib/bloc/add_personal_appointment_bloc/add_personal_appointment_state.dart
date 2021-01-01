@@ -7,7 +7,7 @@ class AddPersonalAppointmentInitial extends AddPersonalAppointmentState {}
 
 class GetEmployeeAndClientDataState extends AddPersonalAppointmentState {
   final List<Employee> employees;
-  final List<Client> clients;
+  final List<PersonalClient> clients;
 
   GetEmployeeAndClientDataState(
       {@required this.employees, @required this.clients});

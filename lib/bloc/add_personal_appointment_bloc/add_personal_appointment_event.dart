@@ -10,7 +10,7 @@ class AddPersonalAppointmentButtonEvent extends AddPersonalAppointmentEvent {
   final DateTime appointmentDate;
   final TimeOfDay appointmentTime;
   final Employee employee;
-  final Client client;
+  final PersonalClient client;
   final bool confirmed;
 
   AddPersonalAppointmentButtonEvent(

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:appointment/Models/client_model.dart';
-import 'package:appointment/Repositories/client_repository.dart';
+import 'package:appointment/Models/personal_client_model.dart';
+import 'package:appointment/Repositories/personal_client_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -27,8 +27,8 @@ class AddPersonalClientBloc
         'state': event.state,
         'zip_code': event.zipCode
       };
-      Client client =
-          await ClientRepository.defaultConstructor().addClient(data);
+      PersonalClient client =
+          await PersonalClientRepository.defaultConstructor().addClient(data);
 
       yield PersonalClientAddedSuccessfullyState(client: client);
     }

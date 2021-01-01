@@ -6,13 +6,13 @@ abstract class ViewPersonalClientEvent {}
 class GetClientListEvent extends ViewPersonalClientEvent {}
 
 class ClientSearchingEvent extends ViewPersonalClientEvent {
-  final List<Client> clientList;
+  final List<PersonalClient> clientList;
   final String query;
 
   ClientSearchingEvent({@required this.clientList, @required this.query});
 }
 
 class ViewSelectedClientEvent extends ViewPersonalClientEvent {
-  final Client client;
+  final PersonalClient client;
   ViewSelectedClientEvent({@required this.client});
 }

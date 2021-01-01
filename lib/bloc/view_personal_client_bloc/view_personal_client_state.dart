@@ -6,20 +6,20 @@ abstract class ViewPersonalClientState {}
 class ViewPersonalClientInitial extends ViewPersonalClientState {}
 
 class ClientSelectedState extends ViewPersonalClientState {
-  final Client client;
+  final PersonalClient client;
   ClientSelectedState({@required this.client});
 }
 
 class ClientSearchingState extends ViewPersonalClientState {
-  final List<Client> clientList;
-  final List<Client> filteredList;
+  final List<PersonalClient> clientList;
+  final List<PersonalClient> filteredList;
 
   ClientSearchingState(
       {@required this.clientList, @required this.filteredList});
 }
 
 class GetClientListState extends ViewPersonalClientState {
-  final List<Client> clientList;
+  final List<PersonalClient> clientList;
   GetClientListState({@required this.clientList});
 }
 

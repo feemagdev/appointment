@@ -28,7 +28,7 @@ class _AddEmployeeBodyState extends State<AddEmployeeBody> {
       appBar: AppBar(
         title: Text("Employee Form"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             navigateToViewEmployeeScreen(context);
           },

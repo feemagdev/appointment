@@ -1,6 +1,7 @@
-import 'package:appointment/Models/personal_client_model.dart';
 import 'package:appointment/Models/employee_model.dart';
-import 'package:appointment/bloc/add_personal_appointment_bloc/add_personal_appointment_bloc.dart';
+import 'package:appointment/Models/personal_appointment_model.dart';
+import 'package:appointment/Models/personal_client_model.dart';
+import 'package:appointment/bloc/update_personal_appointment_bloc/update_personal_appointment_bloc.dart';
 import 'package:appointment/screens/view_personal_appointment_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -8,40 +9,50 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class AddPersonalAppointmentScreen extends StatelessWidget {
-  static const String routeName = 'add_personal_appointment_screen';
+class UpdatePersonalAppointmentScreen extends StatelessWidget {
+  static const String routeName = 'update_personal_appointment_screen';
+  final PersonalClient oldClient;
+  final PersonalAppointment oldAppointment;
+  final Employee oldEmployee;
+  UpdatePersonalAppointmentScreen(
+      {@required this.oldClient,
+      @required this.oldAppointment,
+      @required this.oldEmployee});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddPersonalAppointmentBloc(),
-      child: AddPersonalAppointmentBody(),
+      create: (context) => UpdatePersonalAppointmentBloc(
+          oldClient: oldClient,
+          oldAppointment: oldAppointment,
+          oldEmployee: oldEmployee),
+      child: UpdatePersonalAppointmentBody(),
     );
   }
 }
 
-class AddPersonalAppointmentBody extends StatefulWidget {
+class UpdatePersonalAppointmentBody extends StatefulWidget {
   @override
-  _AddPersonalAppointmentBodyState createState() =>
-      _AddPersonalAppointmentBodyState();
+  _UpdatePersonalAppointmentBodyState createState() =>
+      _UpdatePersonalAppointmentBodyState();
 }
 
-class _AddPersonalAppointmentBodyState
-    extends State<AddPersonalAppointmentBody> {
+class _UpdatePersonalAppointmentBodyState
+    extends State<UpdatePersonalAppointmentBody> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
-  List<Employee> employees = List();
-  List<PersonalClient> clients;
-  Employee selectedEmployee;
-  PersonalClient selectedClient;
-  DateTime selectedDate;
-  TimeOfDay selectedTime;
-  bool confirmed;
-
+  List<Employee> _employees = List();
+  List<PersonalClient> _clients = List();
+  PersonalAppointment _oldAppointment;
+  Employee _selectedEmployee;
+  PersonalClient _selectedClient;
+  DateTime _selectedDate;
+  TimeOfDay _selectedTime;
+  bool _confirmed;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Personal Client Appointment Form"),
+        title: Text("Update Personal Client"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -51,26 +62,43 @@ class _AddPersonalAppointmentBodyState
       ),
       body: Stack(
         children: [
-          BlocListener<AddPersonalAppointmentBloc, AddPersonalAppointmentState>(
+          BlocListener<UpdatePersonalAppointmentBloc,
+              UpdatePersonalAppointmentState>(
             listener: (context, state) {
-              if (state is PersonalAppointmentAddedSuccessfullyState) {
+              if (state is PersonalAppointmentUpdatedSuccessfullyState) {
                 return successDialogAlert("Appointment Added Successfully");
               }
             },
-            child: BlocBuilder<AddPersonalAppointmentBloc,
-                AddPersonalAppointmentState>(builder: (context, state) {
-              if (state is AddPersonalAppointmentInitial) {
-                BlocProvider.of<AddPersonalAppointmentBloc>(context)
+            child: BlocBuilder<UpdatePersonalAppointmentBloc,
+                UpdatePersonalAppointmentState>(builder: (context, state) {
+              if (state is UpdatePersonalAppointmentInitial) {
+                BlocProvider.of<UpdatePersonalAppointmentBloc>(context)
                     .add(GetEmployeeAndClientDataEvent());
                 return Container();
-              } else if (state is AddPersonalAppointmentLoadingState) {
+              } else if (state is UpdatePersonalAppointmentLoadingState) {
                 return Center(
                   child: CircularProgressIndicator(),
                 );
               } else if (state is GetEmployeeAndClientDataState) {
-                employees = state.employees;
-                clients = state.clients;
-                print(employees[0].getEmployeeName());
+                _employees = state.employees;
+                _clients = state.clients;
+                _selectedEmployee =
+                    BlocProvider.of<UpdatePersonalAppointmentBloc>(context)
+                        .oldEmployee;
+                _selectedClient =
+                    BlocProvider.of<UpdatePersonalAppointmentBloc>(context)
+                        .oldClient;
+                _oldAppointment =
+                    BlocProvider.of<UpdatePersonalAppointmentBloc>(context)
+                        .oldAppointment;
+                _selectedDate = _oldAppointment.getAppointmentDate();
+                _selectedTime = TimeOfDay(
+                    hour: _oldAppointment.getAppointmentTime().hour,
+                    minute: _oldAppointment.getAppointmentTime().minute);
+                _dateController.text =
+                    DateFormat.yMMMMd('en_US').format(_selectedDate);
+                _timeController.text = _selectedTime.format(context);
+                _confirmed = _oldAppointment.getStatus();
                 return _personalClientAppointmentFormUI();
               }
               return Container();
@@ -93,11 +121,12 @@ class _AddPersonalAppointmentBodyState
                 contentPadding: EdgeInsets.all(0.0)),
             searchBoxDecoration:
                 InputDecoration(hintText: "Search by employee name"),
-            items: employees,
-            selectedItem: selectedEmployee,
+            items: _employees,
+            selectedItem: _selectedEmployee,
             itemAsString: (Employee u) => u.getEmployeeName(),
             onChanged: (Employee data) {
-              selectedEmployee = data;
+              _selectedEmployee = data;
+              _oldAppointment.setEmployeeID(_selectedEmployee.getEmployeeID());
             },
           ),
           SizedBox(
@@ -110,12 +139,13 @@ class _AddPersonalAppointmentBodyState
                 contentPadding: EdgeInsets.all(0.0)),
             searchBoxDecoration:
                 InputDecoration(hintText: "Search by name or phone"),
-            items: clients,
-            selectedItem: selectedClient,
+            items: _clients,
+            selectedItem: _selectedClient,
             itemAsString: (PersonalClient u) =>
                 u.getPhone() + ", " + u.getLastName() + ", " + u.getFirstName(),
             onChanged: (PersonalClient data) {
-              selectedClient = data;
+              _selectedClient = data;
+              _oldAppointment.setClientID(_selectedClient.getClientID());
             },
           ),
           SizedBox(
@@ -128,21 +158,22 @@ class _AddPersonalAppointmentBodyState
               hintText: "select date",
             ),
             onTap: () async {
-              selectedDate = await showDatePicker(
+              _selectedDate = await showDatePicker(
                   context: context,
                   initialDate:
-                      selectedDate == null ? DateTime.now() : selectedDate,
-                  firstDate: DateTime.now(),
+                      _selectedDate == null ? DateTime.now() : _selectedDate,
+                  firstDate: DateTime(2015),
                   lastDate: DateTime(DateTime.now().year + 10));
 
               setState(() {
-                if (selectedDate == null) {
-                  selectedDate = DateTime.now();
+                if (_selectedDate == null) {
+                  _selectedDate = DateTime.now();
                   _dateController.text =
-                      DateFormat.yMMMMd('en_US').format(selectedDate);
+                      DateFormat.yMMMMd('en_US').format(_selectedDate);
                 } else {
                   _dateController.text =
-                      DateFormat.yMMMMd('en_US').format(selectedDate);
+                      DateFormat.yMMMMd('en_US').format(_selectedDate);
+                  _oldAppointment.setAppointmentDate(_selectedDate);
                 }
               });
             },
@@ -157,27 +188,31 @@ class _AddPersonalAppointmentBodyState
                 hintText: "select time",
               ),
               onTap: () async {
-                selectedTime = await showTimePicker(
+                _selectedTime = await showTimePicker(
                     context: context,
-                    initialTime:
-                        selectedTime == null ? TimeOfDay.now() : selectedTime);
+                    initialTime: _selectedTime == null
+                        ? TimeOfDay.now()
+                        : _selectedTime);
 
                 setState(() {
-                  if (selectedTime == null) {
-                    selectedTime = TimeOfDay.now();
-                    _timeController.text = selectedTime.format(context);
+                  if (_selectedTime == null) {
+                    _selectedTime = TimeOfDay.now();
+                    _timeController.text = _selectedTime.format(context);
                   } else {
-                    _timeController.text = selectedTime.format(context);
+                    _timeController.text = _selectedTime.format(context);
+                    _oldAppointment.setAppointmentTime(DateTime(2020, 1, 1,
+                        _selectedTime.hour, _selectedTime.minute, 0, 0, 0));
                   }
                 });
               }),
           CheckboxListTile(
               title: Text("Confirmed ? "),
-              value: confirmed == null ? false : confirmed,
+              value: _confirmed == null ? false : _confirmed,
               subtitle: Text("Checked for yes"),
               onChanged: (value) {
                 setState(() {
-                  confirmed = value;
+                  _confirmed = value;
+                  _oldAppointment.setStatus(_confirmed);
                 });
               }),
           SizedBox(
@@ -185,16 +220,12 @@ class _AddPersonalAppointmentBodyState
           ),
           RaisedButton(
             onPressed: () {
-              BlocProvider.of<AddPersonalAppointmentBloc>(context).add(
-                  AddPersonalAppointmentButtonEvent(
-                      appointmentDate: selectedDate,
-                      appointmentTime: selectedTime,
-                      dateAdded: DateTime.now(),
-                      employee: selectedEmployee,
-                      client: selectedClient,
-                      confirmed: confirmed == null ? false : confirmed));
+              _oldAppointment.setDateAdded(DateTime.now());
+              BlocProvider.of<UpdatePersonalAppointmentBloc>(context).add(
+                  UpdatePersonalAppointmentButtonEvent(
+                      oldAppointment: _oldAppointment));
             },
-            child: Text("Add Appointment"),
+            child: Text("Update Appointment"),
           )
         ],
       ),
@@ -203,7 +234,7 @@ class _AddPersonalAppointmentBodyState
 
   successDialogAlert(String message) async {
     await Alert(
-      context: this.context,
+      context: context,
       type: AlertType.success,
       title: "",
       desc: message,
@@ -214,14 +245,12 @@ class _AddPersonalAppointmentBodyState
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () {
-            Navigator.pop(this.context);
             navigateToViewPersonalAppointmentScreen(context);
           },
           width: 120,
         )
       ],
     ).show().then((value) {
-      Navigator.pop(this.context);
       navigateToViewPersonalAppointmentScreen(context);
     });
   }
@@ -229,6 +258,6 @@ class _AddPersonalAppointmentBodyState
   void navigateToViewPersonalAppointmentScreen(BuildContext context) {
     Navigator.pushReplacementNamed(
         context, ViewPersonalAppointmentScreen.routeName,
-        arguments: employees);
+        arguments: _employees);
   }
 }

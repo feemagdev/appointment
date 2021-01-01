@@ -35,7 +35,7 @@ class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
       appBar: AppBar(
         title: Text("Employees"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             navigateToDashboardScreen(context);
           },

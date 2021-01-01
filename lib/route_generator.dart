@@ -1,8 +1,11 @@
 import 'package:appointment/Models/employee_model.dart';
+import 'package:appointment/Models/personal_appointment_model.dart';
+import 'package:appointment/Models/personal_client_model.dart';
 import 'package:appointment/screens/add_employee_screen.dart';
 import 'package:appointment/screens/add_personal_appointment_screen.dart';
 import 'package:appointment/screens/add_personal_client_screen.dart';
 import 'package:appointment/screens/dashboard_screen.dart';
+import 'package:appointment/screens/update_personal_appointment_screen.dart';
 import 'package:appointment/screens/veiw_personal_client_screen.dart';
 import 'package:appointment/screens/view_employee_screen.dart';
 import 'package:appointment/screens/view_personal_appointment_screen.dart';
@@ -32,6 +35,17 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => ViewPersonalClientScreen());
       case ViewEmployeeScreen.routeName:
         return MaterialPageRoute(builder: (_) => ViewEmployeeScreen());
+      case UpdatePersonalAppointmentScreen.routeName:
+        List list = args;
+        Employee oldEmployee = list[0];
+        PersonalAppointment oldAppointment = list[1];
+        PersonalClient oldClient = list[2];
+        return MaterialPageRoute(
+            builder: (_) => UpdatePersonalAppointmentScreen(
+                  oldAppointment: oldAppointment,
+                  oldClient: oldClient,
+                  oldEmployee: oldEmployee,
+                ));
       default:
         // If there is no such named route in the switch statement, e.g. /third
         return _errorRoute();

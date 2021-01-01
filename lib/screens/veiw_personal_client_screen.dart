@@ -1,4 +1,4 @@
-import 'package:appointment/Models/client_model.dart';
+import 'package:appointment/Models/personal_client_model.dart';
 import 'package:appointment/bloc/view_personal_client_bloc/view_personal_client_bloc.dart';
 import 'package:appointment/screens/add_personal_client_screen.dart';
 import 'package:appointment/screens/dashboard_screen.dart';
@@ -22,15 +22,15 @@ class ViewPersonalClientBody extends StatefulWidget {
 }
 
 class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
-  List<Client> clientList = List();
-  List<Client> filteredClients = List();
+  List<PersonalClient> clientList = List();
+  List<PersonalClient> filteredClients = List();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Personal Clients"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             nvigateToDashboard(context);
           },
@@ -164,7 +164,8 @@ class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
     Navigator.pushReplacementNamed(context, AddPersonalClientScreen.routeName);
   }
 
-  void navigateToClientDetailScreen(BuildContext context, Client client) {}
+  void navigateToClientDetailScreen(
+      BuildContext context, PersonalClient client) {}
 
   void nvigateToDashboard(BuildContext context) {
     Navigator.pushReplacementNamed(context, DashboardScreen.routeName);

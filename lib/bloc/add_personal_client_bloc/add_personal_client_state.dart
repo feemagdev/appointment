@@ -8,6 +8,6 @@ class AddPersonalClientInitial extends AddPersonalClientState {}
 class AddPersonalClientLoadingState extends AddPersonalClientState {}
 
 class PersonalClientAddedSuccessfullyState extends AddPersonalClientState {
-  final Client client;
+  final PersonalClient client;
   PersonalClientAddedSuccessfullyState({@required this.client});
 }

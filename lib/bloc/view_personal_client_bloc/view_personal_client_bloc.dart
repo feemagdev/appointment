@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:appointment/Models/client_model.dart';
-import 'package:appointment/Repositories/client_repository.dart';
+import 'package:appointment/Models/personal_client_model.dart';
+import 'package:appointment/Repositories/personal_client_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -18,16 +18,17 @@ class ViewPersonalClientBloc
   ) async* {
     if (event is GetClientListEvent) {
       yield ViewPersonalClientLoadingState();
-      List<Client> clients = List();
-      clients = await ClientRepository.defaultConstructor().getClientsList();
+      List<PersonalClient> clients = List();
+      clients =
+          await PersonalClientRepository.defaultConstructor().getClientsList();
       if (clients == null || clients.isEmpty) {
         yield NoClientFoundState();
       } else {
         yield GetClientListState(clientList: clients);
       }
     } else if (event is ClientSearchingEvent) {
-      List<Client> clientList = event.clientList;
-      List<Client> filtered = List();
+      List<PersonalClient> clientList = event.clientList;
+      List<PersonalClient> filtered = List();
       String string = event.query;
       clientList.forEach((element) {
         if (element

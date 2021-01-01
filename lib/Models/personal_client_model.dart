@@ -1,4 +1,4 @@
-class Client {
+class PersonalClient {
   final String _clientID;
   final String _phone;
   final String _lastName;
@@ -8,7 +8,7 @@ class Client {
   final String _state;
   final String _zipCode;
 
-  Client.fromMap(Map snapshot, String clientID)
+  PersonalClient.fromMap(Map snapshot, String clientID)
       : _clientID = clientID,
         _phone = snapshot['phone'],
         _lastName = snapshot['last_name'],

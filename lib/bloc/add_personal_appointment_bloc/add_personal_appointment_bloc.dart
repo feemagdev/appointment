@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:appointment/Models/client_model.dart';
+import 'package:appointment/Models/personal_client_model.dart';
 import 'package:appointment/Models/employee_model.dart';
-import 'package:appointment/Repositories/client_repository.dart';
+import 'package:appointment/Repositories/personal_client_repository.dart';
 import 'package:appointment/Repositories/employee_repository.dart';
 import 'package:appointment/Repositories/personal_appointment_repository.dart';
 import 'package:bloc/bloc.dart';
@@ -23,12 +23,12 @@ class AddPersonalAppointmentBloc
     if (event is GetEmployeeAndClientDataEvent) {
       yield AddPersonalAppointmentLoadingState();
       List<Employee> employeesList = List();
-      List<Client> clientsList = List();
+      List<PersonalClient> clientsList = List();
       employeesList =
           await EmployeeRepository.defaultConstructor().getEmployeesList();
 
       clientsList =
-          await ClientRepository.defaultConstructor().getClientsList();
+          await PersonalClientRepository.defaultConstructor().getClientsList();
 
       yield GetEmployeeAndClientDataState(
           clients: clientsList, employees: employeesList);

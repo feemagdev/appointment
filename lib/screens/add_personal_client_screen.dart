@@ -34,7 +34,7 @@ class _AddPersonalClientBodyState extends State<AddPersonalClientBody> {
       appBar: AppBar(
         title: Text("Client Form"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             navigateToViewPersonalClientScreen(context);
           },
