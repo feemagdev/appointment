@@ -36,8 +36,8 @@ class AddPersonalAppointmentBloc
       yield AddPersonalAppointmentLoadingState();
       Map<String, dynamic> data = {
         'date_added': event.dateAdded,
-        'appointment_date': changeDate(event.appointmentDate),
-        'appointment_time': changeTime(event.appointmentTime),
+        'appointment_date': _changeDate(event.appointmentDate),
+        'appointment_time': _changeTime(event.appointmentTime),
         'client_id': event.client.getClientID(),
         'employee_id': event.employee.getEmployeeID(),
         'confirmed': event.confirmed
@@ -52,12 +52,12 @@ class AddPersonalAppointmentBloc
     }
   }
 
-  DateTime changeDate(DateTime appointmentDate) {
+  DateTime _changeDate(DateTime appointmentDate) {
     return DateTime(appointmentDate.year, appointmentDate.month,
         appointmentDate.day, 12, 0, 0, 0, 0);
   }
 
-  DateTime changeTime(TimeOfDay appointmentTime) {
+  DateTime _changeTime(TimeOfDay appointmentTime) {
     return DateTime(
         2020, 1, 1, appointmentTime.hour, appointmentTime.minute, 0, 0, 0);
   }

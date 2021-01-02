@@ -1,37 +1,37 @@
-class PersonalClient {
-  String _clientID;
+class BusinessClient {
+  String _bClientID;
   String _phone;
-  String _lastName;
-  String _firstName;
+  String _company;
+  String _contact;
   String _address;
   String _city;
   String _state;
   String _zipCode;
 
-  PersonalClient.fromMap(Map snapshot, String clientID)
-      : _clientID = clientID,
+  BusinessClient.fromMap(Map snapshot, String bClientID)
+      : _bClientID = bClientID,
         _phone = snapshot['phone'],
-        _lastName = snapshot['last_name'],
-        _firstName = snapshot['first_name'],
+        _company = snapshot['company'],
+        _contact = snapshot['contact'],
         _address = snapshot['address'],
         _city = snapshot['city'],
         _state = snapshot['state'],
         _zipCode = snapshot['zip_code'];
 
-  String getClientID() {
-    return _clientID;
+  String getBClientID() {
+    return _bClientID;
   }
 
   String getPhone() {
     return _phone;
   }
 
-  String getLastName() {
-    return _lastName;
+  String getCompany() {
+    return _company;
   }
 
-  String getFirstName() {
-    return _firstName;
+  String getContact() {
+    return _contact;
   }
 
   String getAddress() {
@@ -58,12 +58,12 @@ class PersonalClient {
     _address = address;
   }
 
-  void setLastName(String lastName) {
-    _lastName = lastName;
+  void setCompany(String company) {
+    _company = company;
   }
 
-  void setFirstName(String firstName) {
-    _firstName = firstName;
+  void setContact(String contact) {
+    _contact = contact;
   }
 
   void setCity(String city) {

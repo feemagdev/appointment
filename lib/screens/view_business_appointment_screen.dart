@@ -1,56 +1,56 @@
-import 'package:appointment/Models/personal_client_model.dart';
+import 'package:appointment/Models/business_appointment_model.dart';
+import 'package:appointment/Models/business_client_model.dart';
 import 'package:appointment/Models/employee_model.dart';
-import 'package:appointment/Models/personal_appointment_model.dart';
-import 'package:appointment/bloc/view_personal_appointment_bloc/personal_appointment_bloc.dart';
-import 'package:appointment/screens/add_personal_appointment_screen.dart';
+import 'package:appointment/Screens/add_business_appointment_screen.dart';
+import 'package:appointment/Screens/update_business_appointment_screen.dart';
+import 'package:appointment/bloc/business_appointment_bloc/business_appointment_bloc.dart';
 import 'package:appointment/screens/dashboard_screen.dart';
-import 'package:appointment/screens/update_personal_appointment_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-class ViewPersonalAppointmentScreen extends StatelessWidget {
-  static const String routeName = 'view_personal_appointment_screen';
+class ViewBusinessAppointmentScreen extends StatelessWidget {
+  static const String routeName = 'view_business_appointment_screen';
   final List<Employee> employees;
-  ViewPersonalAppointmentScreen({@required this.employees});
+  ViewBusinessAppointmentScreen({@required this.employees});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => PersonalAppointmentBloc(employees: employees),
-      child: PersonalAppointmentBody(),
+      create: (context) => BusinessAppointmentBloc(employees: employees),
+      child: BusinessAppointmentBody(),
     );
   }
 }
 
-class PersonalAppointmentBody extends StatefulWidget {
+class BusinessAppointmentBody extends StatefulWidget {
   @override
-  _PersonalAppointmentBodyState createState() =>
-      _PersonalAppointmentBodyState();
+  _BusinessAppointmentBodyState createState() =>
+      _BusinessAppointmentBodyState();
 }
 
-class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
+class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
   TextEditingController _dateController = TextEditingController();
   List<Employee> _employees;
-  List<PersonalAppointment> _appointments;
-  List<PersonalClient> _personalClients;
+  List<BusinessAppointment> _bAppointments;
+  List<BusinessClient> _bClients;
   DateTime _selectedDate;
   Employee _selectedEmployee;
-  PersonalAppointment _selectedAppointment;
-  PersonalClient _selectedClient;
+  BusinessAppointment _selectedBAppointment;
+  BusinessClient _selectedBClient;
   int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
-    _employees = BlocProvider.of<PersonalAppointmentBloc>(context).employees;
+    _employees = BlocProvider.of<BusinessAppointmentBloc>(context).employees;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Personal Appointments"),
+        title: Text("Business Appointments"),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            navigateToDashboardScreen(context);
+            _navigateToDashboardScreen(context);
           },
         ),
       ),
@@ -67,7 +67,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
                       if (selectedIndex == null) {
                         infoDialogAlert("Please select an appointment");
                       } else {
-                        print("send confirmation message");
+                        print("send conformation message");
                       }
                     },
                     child: Text("Text Confirmation to Record"),
@@ -87,7 +87,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
                         } else {
                           warningDialogAlert(
                               "Are you sure to delete that record ?",
-                              _selectedAppointment.getAppointmentID());
+                              _selectedBAppointment.getBAppointmentID());
                         }
                       }),
                   IconButton(
@@ -99,7 +99,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
                         if (selectedIndex == null) {
                           infoDialogAlert("Please select an appointment");
                         } else {
-                          navigateToUpdatePersonalAppointmentScreen(context);
+                          _navigateToUpdateBusinessAppointmentScreen(context);
                         }
                       }),
                   IconButton(
@@ -108,7 +108,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
                         color: Colors.blue,
                       ),
                       onPressed: () {
-                        navigateToAddAppointmentScreen(context);
+                        _navigateToAddBusinessAppointmentScreen(context);
                       }),
                 ],
               ),
@@ -119,27 +119,29 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
       body: Column(
         children: [
           _viewPersonalAppointmentUI(),
-          BlocListener<PersonalAppointmentBloc, PersonalAppointmentState>(
+          SizedBox(
+            height: 10,
+          ),
+          BlocListener<BusinessAppointmentBloc, BusinessAppointmentState>(
             listener: (context, state) {
-              if (state is PersonalAppointmentDeletedSuccessfully) {
+              if (state is BusinessAppointmentDeletedSuccessfully) {
                 successDialogAlert("Record deleted successfully");
               }
             },
             child:
-                BlocBuilder<PersonalAppointmentBloc, PersonalAppointmentState>(
+                BlocBuilder<BusinessAppointmentBloc, BusinessAppointmentState>(
               builder: (context, state) {
-                if (state is PersonalAppointmentInitial) {
+                if (state is BusinessAppointmentInitial) {
                   return Container();
-                } else if (state is GetPersonalAppointmentDataState) {
-                  _appointments = state.appointments;
-                  _personalClients = state.clients;
-                  return SingleChildScrollView(
-                      child: _appointmentListViewBuilder());
-                } else if (state is NoPersonalAppointmentBookedState) {
+                } else if (state is GetBusinessAppointmentDataState) {
+                  _bAppointments = state.bAppointments;
+                  _bClients = state.bClients;
+                  return Expanded(child: _appointmentListViewBuilder());
+                } else if (state is NoBusinessAppointmentBookedState) {
                   return Center(
                     child: Text("No Appointment Booked"),
                   );
-                } else if (state is PersonalAppointmentLoadingState) {
+                } else if (state is BusinessAppointmentLoadingState) {
                   return Center(child: CircularProgressIndicator());
                 }
                 return Container();
@@ -153,27 +155,27 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
 
   Widget _appointmentListViewBuilder() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.65,
       child: ListView.builder(
           shrinkWrap: true,
-          itemCount: _appointments.length,
+          itemCount: _bAppointments.length,
           itemBuilder: (context, index) {
             return _appointmentUI(
-                _appointments[index], _personalClients[index], index);
+                _bAppointments[index], _bClients[index], index);
           }),
     );
   }
 
-  Widget _appointmentUI(PersonalAppointment personalAppointment,
-      PersonalClient client, int index) {
+  Widget _appointmentUI(
+      BusinessAppointment bAppointment, BusinessClient bClient, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () {
           setState(() {
-            _selectedAppointment = personalAppointment;
-            _selectedClient = client;
+            print("tapped");
             selectedIndex = index;
+            _selectedBAppointment = bAppointment;
+            _selectedBClient = bClient;
           });
         },
         child: Container(
@@ -201,23 +203,15 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Client : ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                        Text(
-                          client.getLastName() +
-                              "," +
-                              " " +
-                              client.getFirstName(),
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ],
+                    Text(
+                      "Company : ",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
+                    Text(
+                      bClient.getCompany(),
+                      style: TextStyle(fontSize: 17),
                     ),
                   ],
                 ),
@@ -225,20 +219,31 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
                   height: 10,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      children: [
-                        Text(
-                          "Phone : ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
-                        ),
-                        Text(
-                          client.getPhone(),
-                          style: TextStyle(fontSize: 17),
-                        ),
-                      ],
+                    Text(
+                      "Contact : ",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
+                    Text(
+                      bClient.getContact(),
+                      style: TextStyle(fontSize: 17),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "Phone : ",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                    ),
+                    Text(
+                      bClient.getPhone(),
+                      style: TextStyle(fontSize: 17),
                     ),
                   ],
                 ),
@@ -256,9 +261,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
                               fontWeight: FontWeight.bold, fontSize: 17),
                         ),
                         Text(
-                          personalAppointment.getStatus() == false
-                              ? "No"
-                              : "Yes",
+                          bAppointment.getStatus() == false ? "No" : "Yes",
                           style: TextStyle(fontSize: 17),
                         )
                       ],
@@ -272,7 +275,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
                         ),
                         Text(
                           DateFormat.jm()
-                              .format(personalAppointment.getAppointmentTime()),
+                              .format(bAppointment.getAppointmentTime()),
                           style: TextStyle(fontSize: 17),
                         )
                       ],
@@ -306,8 +309,8 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
               onChanged: (Employee data) {
                 _selectedEmployee = data;
                 if (_dateController.text.isNotEmpty) {
-                  BlocProvider.of<PersonalAppointmentBloc>(context).add(
-                      GetPersonalAppointmentDataEvent(
+                  BlocProvider.of<BusinessAppointmentBloc>(context).add(
+                      GetBusinessAppointmentDataEvent(
                           employeeID: _selectedEmployee.getEmployeeID(),
                           date: _selectedDate));
                   selectedIndex = null;
@@ -319,9 +322,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
             ),
             TextField(
               controller: _dateController,
-              onChanged: (value) {
-                print(value);
-              },
+              onChanged: (value) {},
               onTap: () async {
                 if (_selectedDate == null) {
                   _selectedDate = DateTime.now();
@@ -338,8 +339,8 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
                     _dateController.text =
                         DateFormat.yMd().format(_selectedDate);
                     if (_selectedEmployee != null) {
-                      BlocProvider.of<PersonalAppointmentBloc>(context).add(
-                          GetPersonalAppointmentDataEvent(
+                      BlocProvider.of<BusinessAppointmentBloc>(context).add(
+                          GetBusinessAppointmentDataEvent(
                               employeeID: _selectedEmployee.getEmployeeID(),
                               date: _selectedDate));
                       selectedIndex = null;
@@ -356,22 +357,22 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
     );
   }
 
-  void navigateToAddAppointmentScreen(BuildContext context) {
-    Navigator.pushNamed(context, AddPersonalAppointmentScreen.routeName);
+  void _navigateToAddBusinessAppointmentScreen(BuildContext context) {
+    Navigator.pushNamed(context, AddBusinessAppointmentScreen.routeName);
   }
 
-  void navigateToDashboardScreen(BuildContext context) {
+  void _navigateToDashboardScreen(BuildContext context) {
     Navigator.pushReplacementNamed(context, DashboardScreen.routeName);
   }
 
-  void navigateToUpdatePersonalAppointmentScreen(BuildContext context) {
+  void _navigateToUpdateBusinessAppointmentScreen(BuildContext context) {
     List list = List();
     list.add(_selectedEmployee);
-    list.add(_selectedAppointment);
-    list.add(_selectedClient);
+    list.add(_selectedBAppointment);
+    list.add(_selectedBClient);
     final args = list;
     Navigator.pushReplacementNamed(
-        context, UpdatePersonalAppointmentScreen.routeName,
+        context, UpdateBusinessAppointmentScreen.routeName,
         arguments: args);
   }
 
@@ -394,8 +395,8 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
         )
       ],
     ).show().then((value) {
-      BlocProvider.of<PersonalAppointmentBloc>(context).add(
-          GetPersonalAppointmentDataEvent(
+      BlocProvider.of<BusinessAppointmentBloc>(context).add(
+          GetBusinessAppointmentDataEvent(
               employeeID: _selectedEmployee.getEmployeeID(),
               date: _selectedDate));
     });
@@ -415,8 +416,8 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
           ),
           onPressed: () {
             Navigator.of(context).pop();
-            BlocProvider.of<PersonalAppointmentBloc>(context).add(
-                DeletePersonalAppointmentEvent(appointmentID: appointmentID));
+            BlocProvider.of<BusinessAppointmentBloc>(context).add(
+                DeleteBusinessAppointmentEvent(appointmentID: appointmentID));
             selectedIndex = null;
           },
           width: 120,

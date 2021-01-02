@@ -1,4 +1,5 @@
 import 'package:appointment/Models/employee_model.dart';
+import 'package:appointment/Screens/update_employee_screen.dart';
 import 'package:appointment/bloc/view_employee_bloc/view_employee_bloc.dart';
 import 'package:appointment/screens/add_employee_screen.dart';
 import 'package:appointment/screens/dashboard_screen.dart';
@@ -22,7 +23,8 @@ class VeiwEmployeeBody extends StatefulWidget {
 }
 
 class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
-  List<Employee> employees;
+  List<Employee> _employees;
+  Employee _selectedEmployee;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,7 +54,7 @@ class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
                       .add(GetEmployeesListEvent());
                   return Container();
                 } else if (state is GetEmployeesListState) {
-                  employees = state.employeesList;
+                  _employees = state.employeesList;
                   return listOfEmployees();
                 } else if (state is ViewEmployeeLoadingState) {
                   return Center(child: CircularProgressIndicator());
@@ -71,12 +73,12 @@ class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
       child: ListView.builder(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
         shrinkWrap: true,
-        itemCount: employees.length,
+        itemCount: _employees.length,
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
-              BlocProvider.of<ViewEmployeeBloc>(context)
-                  .add(ViewSelectedEmployeeEvent(employee: employees[index]));
+              _selectedEmployee = _employees[index];
+              navigateToUpdateEmployeeScreen(context);
             },
             child: Card(
               child: Padding(
@@ -86,7 +88,7 @@ class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      employees[index].getEmployeeName(),
+                      _employees[index].getEmployeeName(),
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.black,
@@ -111,5 +113,10 @@ class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
 
   void navigateToAddEmployeeScreen(BuildContext context) {
     Navigator.pushReplacementNamed(context, AddEmployeeScreen.routeName);
+  }
+
+  void navigateToUpdateEmployeeScreen(BuildContext context) {
+    Navigator.pushReplacementNamed(context, UpdateEmployeeScreen.routeName,
+        arguments: _selectedEmployee);
   }
 }

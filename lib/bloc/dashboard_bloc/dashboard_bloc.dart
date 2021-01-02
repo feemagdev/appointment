@@ -24,6 +24,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         yield PersonalAppointmentScreenNavigationState(employees: employees);
       }
+    } else if (event is BusinessAppointmentScreenNavigationEvent) {
+      yield DashboardLoadingState();
+      List<Employee> employees = await getEmployeesList();
+      if (employees == null) {
+        employees = List();
+        yield BusinessAppointmentScreenNavigationState(employees: employees);
+      } else {
+        yield BusinessAppointmentScreenNavigationState(employees: employees);
+      }
     }
   }
 

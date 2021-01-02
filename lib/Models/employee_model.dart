@@ -1,8 +1,6 @@
 class Employee {
-  final String _employeeID;
-  final String _employeeName;
-
-  Employee(this._employeeID, this._employeeName);
+  String _employeeID;
+  String _employeeName;
 
   Employee.fromMap(Map snapshot, String employeeID)
       : _employeeID = employeeID,
@@ -14,5 +12,9 @@ class Employee {
 
   String getEmployeeName() {
     return _employeeName;
+  }
+
+  void setEmployeeName(String name) {
+    _employeeName = name;
   }
 }

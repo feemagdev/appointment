@@ -4,3 +4,5 @@ part of 'dashboard_bloc.dart';
 abstract class DashboardEvent {}
 
 class PersonalAppointmentScreenNavigationEvent extends DashboardEvent {}
+
+class BusinessAppointmentScreenNavigationEvent extends DashboardEvent {}

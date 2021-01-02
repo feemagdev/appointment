@@ -10,4 +10,9 @@ class PersonalAppointmentScreenNavigationState extends DashboardState {
   PersonalAppointmentScreenNavigationState({@required this.employees});
 }
 
+class BusinessAppointmentScreenNavigationState extends DashboardState {
+  final List<Employee> employees;
+  BusinessAppointmentScreenNavigationState({@required this.employees});
+}
+
 class DashboardLoadingState extends DashboardState {}

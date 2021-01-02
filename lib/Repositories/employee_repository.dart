@@ -32,4 +32,10 @@ class EmployeeRepository {
       return employees;
     }
   }
+
+  Future<bool> updateEmployee(Map data, String employeeID) async {
+    final dbRefernece = FirebaseFirestore.instance;
+    await dbRefernece.collection('employee').doc(employeeID).update(data);
+    return true;
+  }
 }

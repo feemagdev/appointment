@@ -30,4 +30,10 @@ class PersonalClientRepository {
       return clients;
     }
   }
+
+  Future<bool> updateClient(Map data, String clientID) async {
+    final dbReference = FirebaseFirestore.instance;
+    await dbReference.collection('client').doc(clientID).update(data);
+    return true;
+  }
 }

@@ -4,8 +4,3 @@ part of 'view_employee_bloc.dart';
 abstract class ViewEmployeeEvent {}
 
 class GetEmployeesListEvent extends ViewEmployeeEvent {}
-
-class ViewSelectedEmployeeEvent extends ViewEmployeeEvent {
-  final Employee employee;
-  ViewSelectedEmployeeEvent({@required this.employee});
-}

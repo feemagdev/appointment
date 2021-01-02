@@ -1,4 +1,6 @@
 import 'package:appointment/Models/employee_model.dart';
+import 'package:appointment/Screens/view_business_appointment_screen.dart';
+import 'package:appointment/Screens/view_business_client_screen.dart';
 import 'package:appointment/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:appointment/screens/veiw_personal_client_screen.dart';
 import 'package:appointment/screens/view_employee_screen.dart';
@@ -36,6 +38,8 @@ class _DashboardBodyState extends State<DashboardBody> {
               listener: (context, state) {
                 if (state is PersonalAppointmentScreenNavigationState) {
                   navigateToPersonalAppointmentScreen(context, state.employees);
+                } else if (state is BusinessAppointmentScreenNavigationState) {
+                  navigateToBusinessAppointmentScreen(context, state.employees);
                 }
               },
               child: BlocBuilder<DashboardBloc, DashboardState>(
@@ -159,7 +163,10 @@ class _DashboardBodyState extends State<DashboardBody> {
                   ),
                   RaisedButton(
                     color: Colors.blue,
-                    onPressed: () {},
+                    onPressed: () {
+                      BlocProvider.of<DashboardBloc>(context)
+                          .add(BusinessAppointmentScreenNavigationEvent());
+                    },
                     child: Text("Business",
                         style: TextStyle(color: Colors.white, fontSize: 17)),
                   )
@@ -231,7 +238,9 @@ class _DashboardBodyState extends State<DashboardBody> {
                   ),
                   RaisedButton(
                     color: Colors.blue,
-                    onPressed: () {},
+                    onPressed: () {
+                      navigateToViewBusinessClientScreen(context);
+                    },
                     child: Text("Business",
                         style: TextStyle(color: Colors.white, fontSize: 17)),
                   )
@@ -292,5 +301,16 @@ class _DashboardBodyState extends State<DashboardBody> {
 
   void navigateToViewEmployeeScreen(BuildContext context) {
     Navigator.pushReplacementNamed(context, ViewEmployeeScreen.routeName);
+  }
+
+  void navigateToViewBusinessClientScreen(BuildContext context) {
+    Navigator.pushReplacementNamed(context, ViewBusinessClientScreen.routeName);
+  }
+
+  void navigateToBusinessAppointmentScreen(
+      BuildContext context, List<Employee> employees) {
+    Navigator.pushReplacementNamed(
+        context, ViewBusinessAppointmentScreen.routeName,
+        arguments: employees);
   }
 }

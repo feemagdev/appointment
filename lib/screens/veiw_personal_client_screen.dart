@@ -1,4 +1,5 @@
 import 'package:appointment/Models/personal_client_model.dart';
+import 'package:appointment/Screens/update_personal_client_screen.dart';
 import 'package:appointment/bloc/view_personal_client_bloc/view_personal_client_bloc.dart';
 import 'package:appointment/screens/add_personal_client_screen.dart';
 import 'package:appointment/screens/dashboard_screen.dart';
@@ -71,12 +72,7 @@ class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
                 } else if (state is NoClientFoundState) {
                   return Center(child: Text("Sorry You have no clients"));
                 }
-                print("container view personal client");
-                return Container(
-                  color: Colors.white,
-                  height: 500,
-                  width: 200,
-                );
+                return Container();
               },
             ),
           ),
@@ -165,7 +161,11 @@ class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
   }
 
   void navigateToClientDetailScreen(
-      BuildContext context, PersonalClient client) {}
+      BuildContext context, PersonalClient client) {
+    Navigator.pushReplacementNamed(
+        context, UpdatePersonalClientScreen.routeName,
+        arguments: client);
+  }
 
   void nvigateToDashboard(BuildContext context) {
     Navigator.pushReplacementNamed(context, DashboardScreen.routeName);
