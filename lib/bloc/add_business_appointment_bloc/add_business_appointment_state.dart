@@ -19,3 +19,9 @@ class GetEmployeeAndClientDataState extends AddBusinessAppointmentState {
 
 class BusinessAppointmentAddedFailureState extends AddBusinessAppointmentState {
 }
+
+class BusinessAppointmentValidationErrorState
+    extends AddBusinessAppointmentState {
+  final String validation;
+  BusinessAppointmentValidationErrorState({@required this.validation});
+}

@@ -37,7 +37,10 @@ class _UpdatePersonalClientBodyState extends State<UpdatePersonalClientBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Client Form"),
+        title: Text(
+          "Client Form",
+          textScaleFactor: 1,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -230,9 +233,11 @@ class _UpdatePersonalClientBodyState extends State<UpdatePersonalClientBody> {
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.50,
                   child: RaisedButton(
+                      color: Colors.blue[700],
+                      colorBrightness: Brightness.dark,
                       child: Text(
                         "Update Client",
-                        style: TextStyle(fontSize: 20),
+                        textScaleFactor: 1.2,
                       ),
                       onPressed: () {
                         if (_formKey.currentState.validate()) {

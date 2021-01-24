@@ -192,28 +192,29 @@ class _AddBusinessClientBodyState extends State<AddBusinessClientBody> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.50,
-                  child: RaisedButton(
+                RaisedButton(
+                    colorBrightness: Brightness.dark,
+                    color: Colors.blue[700],
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
                       child: Text(
                         "Add Business Client",
-                        style: TextStyle(fontSize: 20),
+                        textScaleFactor: 1.2,
                       ),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          BlocProvider.of<AddBusinessClientBloc>(context).add(
-                              AddBusinessClientButtonEvent(
-                                  phone: _phoneController.text,
-                                  contact: _contactController.text,
-                                  company: _companyController.text,
-                                  address: _addressController.text,
-                                  city: _cityController.text,
-                                  state: _stateController.text,
-                                  zipCode: _zipCodeController.text));
-                        }
-                      }),
-                )
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        BlocProvider.of<AddBusinessClientBloc>(context).add(
+                            AddBusinessClientButtonEvent(
+                                phone: _phoneController.text,
+                                contact: _contactController.text,
+                                company: _companyController.text,
+                                address: _addressController.text,
+                                city: _cityController.text,
+                                state: _stateController.text,
+                                zipCode: _zipCodeController.text));
+                      }
+                    })
               ],
             ),
           )),

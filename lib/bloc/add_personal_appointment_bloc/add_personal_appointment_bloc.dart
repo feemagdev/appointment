@@ -34,20 +34,29 @@ class AddPersonalAppointmentBloc
           clients: clientsList, employees: employeesList);
     } else if (event is AddPersonalAppointmentButtonEvent) {
       yield AddPersonalAppointmentLoadingState();
-      Map<String, dynamic> data = {
-        'date_added': event.dateAdded,
-        'appointment_date': _changeDate(event.appointmentDate),
-        'appointment_time': _changeTime(event.appointmentTime),
-        'client_id': event.client.getClientID(),
-        'employee_id': event.employee.getEmployeeID(),
-        'confirmed': event.confirmed
-      };
-      bool checkAdded = await PersonalAppointmentRepository.defaultConstructor()
-          .createAppointment(data);
-      if (checkAdded) {
-        yield PersonalAppointmentAddedSuccessfullyState();
+
+      String _validation = _validator(event.appointmentDate,
+          event.appointmentTime, event.client, event.employee);
+
+      if (_validation == null) {
+        Map<String, dynamic> data = {
+          'date_added': event.dateAdded,
+          'appointment_date': _changeDate(event.appointmentDate),
+          'appointment_time': _changeTime(event.appointmentTime),
+          'client_id': event.client.getClientID(),
+          'employee_id': event.employee.getEmployeeID(),
+          'confirmed': event.confirmed
+        };
+        bool checkAdded =
+            await PersonalAppointmentRepository.defaultConstructor()
+                .createAppointment(data);
+        if (checkAdded) {
+          yield PersonalAppointmentAddedSuccessfullyState();
+        } else {
+          yield PersonalAppointmentAddedFailureState();
+        }
       } else {
-        yield PersonalAppointmentAddedFailureState();
+        yield PersonalAppointmentValidationErrorState(validation: _validation);
       }
     }
   }
@@ -60,5 +69,20 @@ class AddPersonalAppointmentBloc
   DateTime _changeTime(TimeOfDay appointmentTime) {
     return DateTime(
         2020, 1, 1, appointmentTime.hour, appointmentTime.minute, 0, 0, 0);
+  }
+
+  String _validator(DateTime bAppointmentDate, TimeOfDay bAppointmentTime,
+      PersonalClient bClient, Employee employee) {
+    if (bAppointmentDate == null) {
+      return "Please select date of appointment";
+    } else if (bAppointmentTime == null) {
+      return "Please select time of appointment";
+    } else if (bClient == null) {
+      return "Please select business client";
+    } else if (employee == null) {
+      return "Please select employee";
+    } else {
+      return null;
+    }
   }
 }

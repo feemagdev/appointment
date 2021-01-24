@@ -34,20 +34,29 @@ class AddBusinessAppointmentBloc
           bClients: bClientsList, employees: employeesList);
     } else if (event is AddBusinessAppointmentButtonEvent) {
       yield AddBusinessAppointmentLoadingState();
-      Map<String, dynamic> data = {
-        'date_added': event.dateAdded,
-        'appointment_date': _changeDate(event.bAppointmentDate),
-        'appointment_time': _changeTime(event.bAppointmentTime),
-        'bclient_id': event.bClient.getBClientID(),
-        'employee_id': event.employee.getEmployeeID(),
-        'confirmed': event.confirmed
-      };
-      bool checkAdded = await BusinessAppointmentRepository.defaultConstructor()
-          .createAppointment(data);
-      if (checkAdded) {
-        yield BusinessAppointmentAddedSuccessfullyState();
+
+      String _validation = _validator(event.bAppointmentDate,
+          event.bAppointmentTime, event.bClient, event.employee);
+
+      if (_validation == null) {
+        Map<String, dynamic> data = {
+          'date_added': event.dateAdded,
+          'appointment_date': _changeDate(event.bAppointmentDate),
+          'appointment_time': _changeTime(event.bAppointmentTime),
+          'bclient_id': event.bClient.getBClientID(),
+          'employee_id': event.employee.getEmployeeID(),
+          'confirmed': event.confirmed
+        };
+        bool checkAdded =
+            await BusinessAppointmentRepository.defaultConstructor()
+                .createAppointment(data);
+        if (checkAdded) {
+          yield BusinessAppointmentAddedSuccessfullyState();
+        } else {
+          yield BusinessAppointmentAddedFailureState();
+        }
       } else {
-        yield BusinessAppointmentAddedFailureState();
+        yield BusinessAppointmentValidationErrorState(validation: _validation);
       }
     }
   }
@@ -60,5 +69,20 @@ class AddBusinessAppointmentBloc
   DateTime _changeTime(TimeOfDay appointmentTime) {
     return DateTime(
         2020, 1, 1, appointmentTime.hour, appointmentTime.minute, 0, 0, 0);
+  }
+
+  String _validator(DateTime bAppointmentDate, TimeOfDay bAppointmentTime,
+      BusinessClient bClient, Employee employee) {
+    if (bAppointmentDate == null) {
+      return "Please select date of appointment";
+    } else if (bAppointmentTime == null) {
+      return "Please select time of appointment";
+    } else if (bClient == null) {
+      return "Please select business client";
+    } else if (employee == null) {
+      return "Please select employee";
+    } else {
+      return null;
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:appointment/screens/view_employee_screen.dart';
 import 'package:appointment/screens/view_personal_appointment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const String routeName = 'dashboard_screen';
@@ -27,231 +28,325 @@ class DashboardBody extends StatefulWidget {
 class _DashboardBodyState extends State<DashboardBody> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Appointment Confirmation App"),
-          automaticallyImplyLeading: false,
-        ),
-        body: Stack(
-          children: [
-            BlocListener<DashboardBloc, DashboardState>(
-              listener: (context, state) {
-                if (state is PersonalAppointmentScreenNavigationState) {
-                  navigateToPersonalAppointmentScreen(context, state.employees);
-                } else if (state is BusinessAppointmentScreenNavigationState) {
-                  navigateToBusinessAppointmentScreen(context, state.employees);
+    return SafeArea(
+      child: Scaffold(
+          body: Stack(
+        children: [
+          BlocListener<DashboardBloc, DashboardState>(
+            listener: (context, state) {
+              if (state is PersonalAppointmentScreenNavigationState) {
+                navigateToPersonalAppointmentScreen(context, state.employees);
+              } else if (state is BusinessAppointmentScreenNavigationState) {
+                navigateToBusinessAppointmentScreen(context, state.employees);
+              }
+            },
+            child: BlocBuilder<DashboardBloc, DashboardState>(
+              builder: (context, state) {
+                if (state is DashboardInitial) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: _dashboardUI(),
+                  );
+                } else if (state is DashboardLoadingState) {
+                  return Center(child: CircularProgressIndicator());
                 }
+                return Container();
               },
-              child: BlocBuilder<DashboardBloc, DashboardState>(
-                builder: (context, state) {
-                  if (state is DashboardInitial) {
-                    return _dashboardUI();
-                  } else if (state is DashboardLoadingState) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return Container();
-                },
-              ),
-            )
-          ],
-        )
-        // This trailing comma makes auto-formatting nicer for build methods.
-        );
+            ),
+          )
+        ],
+      )
+          // This trailing comma makes auto-formatting nicer for build methods.
+          ),
+    );
   }
 
   Widget _dashboardUI() {
-    return SingleChildScrollView(
-      child: Stack(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.04,
+        ),
+        Text(
+          "What can we do \nfor you ?",
+          textScaleFactor: 2.0,
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.02,
+        ),
+        _gridBuilder()
+      ],
+    );
+  }
+
+  Widget _gridBuilder() {
+    return Expanded(
+      child: GridView.count(
+        shrinkWrap: true,
+        crossAxisCount: 2,
         children: [
-          Container(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                  ),
-                  _appointmentDashboardUI(),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                  ),
-                  _textingDashboardUI(),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                  ),
-                  _clientDashboardUI(),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.05,
-                  ),
-                  _maintenanceDashboardUI(),
-                ],
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onTap: () {
+                BlocProvider.of<DashboardBloc>(context)
+                    .add(PersonalAppointmentScreenNavigationEvent());
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  //rgb(119,142,255)
+                  color: Color.fromRGBO(119, 142, 255, 1),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/event-planner.svg',
+                      width: 50,
+                      height: 50,
+                    ),
+                    Text(
+                      "Personal",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      "Appointments",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-          Positioned(
-              top: MediaQuery.of(context).size.height * 0.05,
-              left: 20.0,
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onTap: () {
+                BlocProvider.of<DashboardBloc>(context)
+                    .add(BusinessAppointmentScreenNavigationEvent());
+              },
               child: Container(
-                child: new Text(
-                  "Appointments",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                color: Colors.white,
-              )),
-          Positioned(
-              top: MediaQuery.of(context).size.height * 0.22,
-              left: 20.0,
-              child: Container(
-                child: new Text(
-                  "Texting",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                color: Colors.white,
-              )),
-          Positioned(
-              top: MediaQuery.of(context).size.height * 0.39,
-              left: 20.0,
-              child: Container(
-                child: new Text(
-                  "Clients",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                color: Colors.white,
-              )),
-          Positioned(
-              top: MediaQuery.of(context).size.height * 0.56,
-              left: 20.0,
-              child: Container(
-                child: new Text(
-                  "Maintenance Files",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                color: Colors.white,
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget _appointmentDashboardUI() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-              height: MediaQuery.of(context).size.height * 0.12,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      style: BorderStyle.solid,
-                      color: Colors.blue,
-                      width: 2.0)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  RaisedButton(
-                    color: Colors.blue,
-                    onPressed: () {
-                      BlocProvider.of<DashboardBloc>(context)
-                          .add(PersonalAppointmentScreenNavigationEvent());
-                    },
-                    child: Text(
-                      "Personal",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 17,
-                      ),
+                //rgb(105,205,237)
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(105, 205, 237, 1),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
                     ),
-                  ),
-                  RaisedButton(
-                    color: Colors.blue,
-                    onPressed: () {
-                      BlocProvider.of<DashboardBloc>(context)
-                          .add(BusinessAppointmentScreenNavigationEvent());
-                    },
-                    child: Text("Business",
-                        style: TextStyle(color: Colors.white, fontSize: 17)),
-                  )
-                ],
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget _textingDashboardUI() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-              height: 100,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      style: BorderStyle.solid,
-                      color: Colors.blue,
-                      width: 2.0)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  RaisedButton(
-                    color: Colors.blue,
-                    onPressed: () {},
-                    child: Text(
-                      "Personal",
-                      style: TextStyle(color: Colors.white, fontSize: 17),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/schedule.svg',
+                      width: 50,
+                      height: 50,
                     ),
-                  ),
-                  RaisedButton(
-                    color: Colors.blue,
-                    onPressed: () {},
-                    child: Text("Business",
-                        style: TextStyle(color: Colors.white, fontSize: 17)),
-                  )
-                ],
-              )),
-        ],
-      ),
-    );
-  }
-
-  Widget _clientDashboardUI() {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Container(
-              height: MediaQuery.of(context).size.height * 0.12,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      style: BorderStyle.solid,
-                      color: Colors.blue,
-                      width: 2.0)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  RaisedButton(
-                    color: Colors.blue,
-                    onPressed: () {
-                      navigateToViewPersonalClientScreen(context);
-                    },
-                    child: Text(
-                      "Personal",
-                      style: TextStyle(color: Colors.white, fontSize: 17),
+                    Text(
+                      "Business",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
                     ),
-                  ),
-                  RaisedButton(
-                    color: Colors.blue,
-                    onPressed: () {
-                      navigateToViewBusinessClientScreen(context);
-                    },
-                    child: Text("Business",
-                        style: TextStyle(color: Colors.white, fontSize: 17)),
-                  )
-                ],
-              )),
+                    Text(
+                      "Appointments",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onTap: () {
+                navigateToViewPersonalClientScreen(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  //rgb(228,130,236)
+                  color: Color.fromRGBO(228, 130, 236, 1),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/pclient.svg',
+                      width: 50,
+                      height: 50,
+                    ),
+                    Text(
+                      "Personal",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      "Clients",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onTap: () {
+                navigateToViewBusinessClientScreen(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  //rgb(225,116,56)
+                  color: Color.fromRGBO(100, 145, 255, 1),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/group.svg',
+                      width: 50,
+                      height: 50,
+                    ),
+                    Text(
+                      "Business",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text(
+                      "Clients",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onTap: () {
+                //navigateToViewEmployeeScreen(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(105, 205, 237, 1),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/company.svg',
+                      width: 50,
+                      height: 50,
+                    ),
+                    Text(
+                      "Company",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GestureDetector(
+              onTap: () {
+                navigateToViewEmployeeScreen(context);
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(64, 63, 76, 0.8),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/icons/employees.svg',
+                      width: 50,
+                      height: 50,
+                    ),
+                    Text(
+                      "Employees",
+                      textScaleFactor: 1.2,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _maintenanceDashboardUI() {
+  /* Widget _maintenanceDashboardUI() {
     return Container(
       child: Column(
         children: <Widget>[
@@ -286,7 +381,7 @@ class _DashboardBodyState extends State<DashboardBody> {
         ],
       ),
     );
-  }
+  } */
 
   void navigateToPersonalAppointmentScreen(
       BuildContext context, List<Employee> employees) {

@@ -41,7 +41,10 @@ class _AddPersonalAppointmentBodyState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Personal Appointment Form"),
+        title: Text(
+          "Personal Appointment Form",
+          textScaleFactor: 1,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -55,6 +58,8 @@ class _AddPersonalAppointmentBodyState
             listener: (context, state) {
               if (state is PersonalAppointmentAddedSuccessfullyState) {
                 return successDialogAlert("Appointment Added Successfully");
+              } else if (state is PersonalAppointmentValidationErrorState) {
+                return validationDialogAlert(state.validation);
               }
             },
             child: BlocBuilder<AddPersonalAppointmentBloc,
@@ -73,7 +78,7 @@ class _AddPersonalAppointmentBodyState
                 print(employees[0].getEmployeeName());
                 return _personalClientAppointmentFormUI();
               }
-              return Container();
+              return _personalClientAppointmentFormUI();
             }),
           )
         ],
@@ -89,8 +94,7 @@ class _AddPersonalAppointmentBodyState
           DropdownSearch<Employee>(
             showSearchBox: true,
             dropdownSearchDecoration: InputDecoration(
-                hintText: "Search by employee name",
-                contentPadding: EdgeInsets.all(0.0)),
+                hintText: "Employee", contentPadding: EdgeInsets.all(0.0)),
             searchBoxDecoration:
                 InputDecoration(hintText: "Search by employee name"),
             items: employees,
@@ -106,7 +110,7 @@ class _AddPersonalAppointmentBodyState
           DropdownSearch<PersonalClient>(
             showSearchBox: true,
             dropdownSearchDecoration: InputDecoration(
-                hintText: "Search by name or phone",
+                hintText: "Personal Client",
                 contentPadding: EdgeInsets.all(0.0)),
             searchBoxDecoration:
                 InputDecoration(hintText: "Search by name or phone"),
@@ -125,7 +129,7 @@ class _AddPersonalAppointmentBodyState
             controller: _dateController,
             readOnly: true,
             decoration: InputDecoration(
-              hintText: "select date",
+              hintText: "Select date",
             ),
             onTap: () async {
               selectedDate = await showDatePicker(
@@ -154,7 +158,7 @@ class _AddPersonalAppointmentBodyState
               controller: _timeController,
               readOnly: true,
               decoration: InputDecoration(
-                hintText: "select time",
+                hintText: "Select time",
               ),
               onTap: () async {
                 selectedTime = await showTimePicker(
@@ -184,6 +188,8 @@ class _AddPersonalAppointmentBodyState
             height: MediaQuery.of(context).size.height * 0.03,
           ),
           RaisedButton(
+            color: Colors.blue[700],
+            colorBrightness: Brightness.dark,
             onPressed: () {
               BlocProvider.of<AddPersonalAppointmentBloc>(context).add(
                   AddPersonalAppointmentButtonEvent(
@@ -194,7 +200,10 @@ class _AddPersonalAppointmentBodyState
                       client: selectedClient,
                       confirmed: confirmed == null ? false : confirmed));
             },
-            child: Text("Add Appointment"),
+            child: Text(
+              "Add Appointment",
+              textScaleFactor: 1.2,
+            ),
           )
         ],
       ),
@@ -224,6 +233,27 @@ class _AddPersonalAppointmentBodyState
       Navigator.pop(this.context);
       navigateToViewPersonalAppointmentScreen(context);
     });
+  }
+
+  validationDialogAlert(String message) async {
+    await Alert(
+      context: this.context,
+      type: AlertType.info,
+      title: "",
+      desc: message,
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          width: 120,
+        )
+      ],
+    ).show().then((value) {});
   }
 
   void navigateToViewPersonalAppointmentScreen(BuildContext context) {

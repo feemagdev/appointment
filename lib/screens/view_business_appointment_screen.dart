@@ -46,7 +46,10 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
     _employees = BlocProvider.of<BusinessAppointmentBloc>(context).employees;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Business Appointments"),
+        title: Text(
+          "Business Appointments",
+          textScaleFactor: 1,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -60,7 +63,8 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
+              _threeItemPopup(),
+              /*Row(
                 children: [
                   RaisedButton(
                     onPressed: () {
@@ -73,7 +77,7 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
                     child: Text("Text Confirmation to Record"),
                   ),
                 ],
-              ),
+              ),*/
               Row(
                 children: [
                   IconButton(
@@ -172,7 +176,6 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
       child: GestureDetector(
         onTap: () {
           setState(() {
-            print("tapped");
             selectedIndex = index;
             _selectedBAppointment = bAppointment;
             _selectedBClient = bClient;
@@ -206,49 +209,55 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
                   children: [
                     Text(
                       "Company : ",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                      textScaleFactor: 1.1,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
                       bClient.getCompany(),
-                      style: TextStyle(fontSize: 17),
+                      textScaleFactor: 1.1,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Row(
                   children: [
                     Text(
                       "Contact : ",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                      textScaleFactor: 1.1,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
                       bClient.getContact(),
-                      style: TextStyle(fontSize: 17),
+                      textScaleFactor: 1.1,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Row(
                   children: [
                     Text(
                       "Phone : ",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+                      textScaleFactor: 1.1,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
                       bClient.getPhone(),
-                      style: TextStyle(fontSize: 17),
+                      textScaleFactor: 1.1,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,8 +266,10 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
                       children: [
                         Text(
                           "Confirmed : ",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
                           bAppointment.getStatus() == false ? "No" : "Yes",
@@ -270,13 +281,15 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
                       children: [
                         Text(
                           "Time : ",
+                          textScaleFactor: 1.1,
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 17),
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Text(
                           DateFormat.jm()
                               .format(bAppointment.getAppointmentTime()),
-                          style: TextStyle(fontSize: 17),
+                          textScaleFactor: 1.1,
                         )
                       ],
                     ),
@@ -455,5 +468,170 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
         )
       ],
     ).show().then((value) {});
+  }
+
+  Widget _threeItemPopup() => PopupMenuButton(
+      onSelected: (selectedvalue) {
+        _sendSmsReminder(selectedvalue);
+      },
+      itemBuilder: (context) {
+        return items();
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.sms,
+            size: 30,
+            color: Colors.blue[700],
+          ),
+          Text(
+            "Send Reminder",
+            textScaleFactor: 1.2,
+          ),
+        ],
+      ));
+
+  List<PopupMenuEntry<Object>> items() {
+    var list = List<PopupMenuEntry<Object>>();
+    list.add(
+      PopupMenuItem(
+        child: Text(
+          "Select Text Reminder",
+        ),
+      ),
+    );
+    list.add(
+      PopupMenuDivider(
+        height: 10,
+      ),
+    );
+    list.add(
+      PopupMenuItem(
+        value: 'confirm',
+        child: Center(
+          child: Text(
+            "Confirm",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+
+    list.add(
+      PopupMenuItem(
+        value: 'confirm_all',
+        child: Center(
+          child: Text(
+            "Confirm All",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+
+    list.add(
+      PopupMenuItem(
+        value: 'remind',
+        child: Center(
+          child: Text(
+            "Remind",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+
+    list.add(
+      PopupMenuItem(
+        value: 'remind_all',
+        child: Center(
+          child: Text(
+            "Remind All",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+
+    list.add(
+      PopupMenuItem(
+        value: 'cancel',
+        child: Center(
+          child: Text(
+            "Cancel",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+
+    list.add(
+      PopupMenuItem(
+        value: 'cancel_all',
+        child: Center(
+          child: Text(
+            "Cancel All",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+
+    list.add(
+      PopupMenuItem(
+        value: 'cancel_employee',
+        child: Center(
+          child: Text(
+            "Cancel Employee",
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ),
+    );
+    list.add(
+      PopupMenuDivider(
+        height: 10,
+      ),
+    );
+
+    list.add(
+      PopupMenuItem(
+        child: Align(
+            alignment: Alignment.bottomRight,
+            child: Icon(
+              Icons.arrow_downward_outlined,
+              color: Colors.blue[700],
+            )),
+      ),
+    );
+    return list;
+  }
+
+  void _sendSmsReminder(selectedvalue) {
+    switch (selectedvalue) {
+      case 'confirm':
+        print('confirm');
+        break;
+      case 'confirm_all':
+        print('confirm_all');
+        break;
+      case 'remind':
+        print('remind');
+        break;
+      case 'remind_all':
+        print('remind_all');
+        break;
+      case 'cancel':
+        print('cancel');
+        break;
+      case 'cancel_all':
+        print('cancel_all');
+        break;
+      case 'cancel_employee':
+        print('cancel_employee');
+        break;
+    }
   }
 }

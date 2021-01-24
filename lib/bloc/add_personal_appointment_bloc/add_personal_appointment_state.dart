@@ -20,3 +20,9 @@ class PersonalAppointmentAddedSuccessfullyState
 
 class PersonalAppointmentAddedFailureState extends AddPersonalAppointmentState {
 }
+
+class PersonalAppointmentValidationErrorState
+    extends AddPersonalAppointmentState {
+  final String validation;
+  PersonalAppointmentValidationErrorState({@required this.validation});
+}

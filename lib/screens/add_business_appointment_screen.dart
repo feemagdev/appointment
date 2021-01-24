@@ -41,7 +41,10 @@ class _AddBusinessAppointmentBodyState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Personal Appointment Form"),
+        title: Text(
+          "Business Appointment Form",
+          textScaleFactor: 1,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -55,6 +58,8 @@ class _AddBusinessAppointmentBodyState
             listener: (context, state) {
               if (state is BusinessAppointmentAddedSuccessfullyState) {
                 return successDialogAlert("Appointment Added Successfully");
+              } else if (state is BusinessAppointmentValidationErrorState) {
+                return validationDialogAlert(state.validation);
               }
             },
             child: BlocBuilder<AddBusinessAppointmentBloc,
@@ -72,7 +77,7 @@ class _AddBusinessAppointmentBodyState
                 bClients = state.bClients;
                 return _personalClientAppointmentFormUI();
               }
-              return Container();
+              return _personalClientAppointmentFormUI();
             }),
           )
         ],
@@ -88,8 +93,7 @@ class _AddBusinessAppointmentBodyState
           DropdownSearch<Employee>(
             showSearchBox: true,
             dropdownSearchDecoration: InputDecoration(
-                hintText: "Search by employee name",
-                contentPadding: EdgeInsets.all(0.0)),
+                hintText: "Employee", contentPadding: EdgeInsets.all(0.0)),
             searchBoxDecoration:
                 InputDecoration(hintText: "Search by employee name"),
             items: employees,
@@ -105,7 +109,7 @@ class _AddBusinessAppointmentBodyState
           DropdownSearch<BusinessClient>(
             showSearchBox: true,
             dropdownSearchDecoration: InputDecoration(
-                hintText: "Search by company or phone",
+                hintText: "Business client",
                 contentPadding: EdgeInsets.all(0.0)),
             searchBoxDecoration:
                 InputDecoration(hintText: "Search by name or phone"),
@@ -183,6 +187,10 @@ class _AddBusinessAppointmentBodyState
             height: MediaQuery.of(context).size.height * 0.03,
           ),
           RaisedButton(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+            color: Colors.blue[700],
+            colorBrightness: Brightness.dark,
             onPressed: () {
               BlocProvider.of<AddBusinessAppointmentBloc>(context).add(
                   AddBusinessAppointmentButtonEvent(
@@ -193,7 +201,10 @@ class _AddBusinessAppointmentBodyState
                       bClient: selectedBClient,
                       confirmed: confirmed == null ? false : confirmed));
             },
-            child: Text("Add Business Appointment"),
+            child: Text(
+              "Add Business Appointment",
+              textScaleFactor: 1.2,
+            ),
           )
         ],
       ),
@@ -223,6 +234,27 @@ class _AddBusinessAppointmentBodyState
       Navigator.pop(this.context);
       _navigateToViewBusinessAppointmentScreen(context);
     });
+  }
+
+  validationDialogAlert(String message) async {
+    await Alert(
+      context: this.context,
+      type: AlertType.info,
+      title: "",
+      desc: message,
+      buttons: [
+        DialogButton(
+          child: Text(
+            "OK",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          width: 120,
+        )
+      ],
+    ).show().then((value) {});
   }
 
   void _navigateToViewBusinessAppointmentScreen(BuildContext context) {

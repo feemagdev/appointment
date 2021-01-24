@@ -21,6 +21,7 @@ class AddEmployeeBody extends StatefulWidget {
 
 class _AddEmployeeBodyState extends State<AddEmployeeBody> {
   TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -81,18 +82,53 @@ class _AddEmployeeBodyState extends State<AddEmployeeBody> {
             SizedBox(
               height: 10,
             ),
-            ElevatedButton(
+            TextFormField(
+              controller: _phoneController,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(hintText: "Phone Number"),
+              validator: (value) {
+                bool phoneValidation = _phoneValidator(value);
+                if (phoneValidation) {
+                  return null;
+                } else {
+                  return "please write a correct phone number";
+                }
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            RaisedButton(
+                color: Colors.blue[700],
+                colorBrightness: Brightness.dark,
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     BlocProvider.of<AddEmployeeBloc>(context).add(
-                        AddEmployeeButtonEvent(name: _nameController.text));
+                        AddEmployeeButtonEvent(
+                            name: _nameController.text,
+                            phone: _phoneController.text));
                   }
                 },
-                child: Text("Add Employee"))
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Add Employee",
+                    textScaleFactor: 1.2,
+                  ),
+                ))
           ],
         ),
       ),
     );
+  }
+
+  bool _phoneValidator(String phone) {
+    String pattern = r"^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$";
+    RegExp regExp = new RegExp(pattern);
+    if (regExp.hasMatch(phone)) {
+      return true;
+    }
+    return false;
   }
 
   void navigateToViewEmployeeScreen(BuildContext context) {

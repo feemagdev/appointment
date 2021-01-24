@@ -24,13 +24,17 @@ class UpdateEmployeeBody extends StatefulWidget {
 
 class _UpdateEmployeeBodyState extends State<UpdateEmployeeBody> {
   TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
   Employee _employee;
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Employee Form"),
+        title: Text(
+          "Employee Form",
+          textScaleFactor: 1,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -52,6 +56,7 @@ class _UpdateEmployeeBodyState extends State<UpdateEmployeeBody> {
                   _employee =
                       BlocProvider.of<UpdateEmployeeBloc>(context).employee;
                   _nameController.text = _employee.getEmployeeName();
+                  _phoneController.text = _employee.getEmployeePhone();
                   return _employeeFormUI();
                 } else if (state is UpdateEmployeeLoadingState) {
                   return Center(child: CircularProgressIndicator());
@@ -91,18 +96,55 @@ class _UpdateEmployeeBodyState extends State<UpdateEmployeeBody> {
             SizedBox(
               height: 10,
             ),
+            TextFormField(
+              controller: _phoneController,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(hintText: "Phone Number"),
+              validator: (value) {
+                bool phoneValidation = phoneValidator(value);
+                if (phoneValidation) {
+                  return null;
+                } else {
+                  return "please write a correct phone number";
+                }
+              },
+              onChanged: (value) {
+                _employee.setEmployeePhone(value);
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
             RaisedButton(
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    BlocProvider.of<UpdateEmployeeBloc>(context)
-                        .add(UpdateEmployeeButtonEvent(employee: _employee));
-                  }
-                },
-                child: Text("Update Employee"))
+              color: Colors.blue[700],
+              colorBrightness: Brightness.dark,
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  BlocProvider.of<UpdateEmployeeBloc>(context)
+                      .add(UpdateEmployeeButtonEvent(employee: _employee));
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  "Update Employee",
+                  textScaleFactor: 1.2,
+                ),
+              ),
+            )
           ],
         ),
       ),
     );
+  }
+
+  bool phoneValidator(String phone) {
+    String pattern = r"^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$";
+    RegExp regExp = new RegExp(pattern);
+    if (regExp.hasMatch(phone)) {
+      return true;
+    }
+    return false;
   }
 
   void navigateToViewEmployeeScreen(BuildContext context) {

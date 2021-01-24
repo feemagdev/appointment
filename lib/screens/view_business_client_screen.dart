@@ -29,7 +29,10 @@ class _ViewBusinessClientBodyState extends State<ViewBusinessClientBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Business Clients"),
+        title: Text(
+          "Business Clients",
+          textScaleFactor: 1,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -38,6 +41,7 @@ class _ViewBusinessClientBodyState extends State<ViewBusinessClientBody> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[700],
         child: Icon(Icons.add),
         onPressed: () {
           _nvaigateToAddBusinessClientScreen(context);
@@ -133,8 +137,8 @@ class _ViewBusinessClientBodyState extends State<ViewBusinessClientBody> {
                         _filteredBusinessClients[index].getCompany() +
                             ", " +
                             _filteredBusinessClients[index].getContact(),
+                        textScaleFactor: 1.2,
                         style: TextStyle(
-                          fontSize: 16.0,
                           color: Colors.black,
                         ),
                       ),
@@ -145,8 +149,8 @@ class _ViewBusinessClientBodyState extends State<ViewBusinessClientBody> {
                         _filteredBusinessClients[index]
                             .getPhone()
                             .toLowerCase(),
+                        textScaleFactor: 1.1,
                         style: TextStyle(
-                          fontSize: 14.0,
                           color: Colors.grey,
                         ),
                       ),

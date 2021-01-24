@@ -16,7 +16,10 @@ class AddEmployeeBloc extends Bloc<AddEmployeeEvent, AddEmployeeState> {
   ) async* {
     if (event is AddEmployeeButtonEvent) {
       yield AddEmployeeLoadingState();
-      Map<String, dynamic> map = {'employee_name': event.name};
+      Map<String, dynamic> map = {
+        'employee_name': event.name,
+        'employee_phone': event.phone
+      };
       await EmployeeRepository.defaultConstructor().addEmployee(map);
       yield EmployeeAddedSuccessfullyState();
     }

@@ -29,6 +29,7 @@ class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[700],
         onPressed: () {
           navigateToAddEmployeeScreen(context);
         },
@@ -89,13 +90,20 @@ class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
                   children: <Widget>[
                     Text(
                       _employees[index].getEmployeeName(),
+                      textScaleFactor: 1.2,
                       style: TextStyle(
-                        fontSize: 16.0,
                         color: Colors.black,
                       ),
                     ),
                     SizedBox(
                       height: 5.0,
+                    ),
+                    Text(
+                      _employees[index].getEmployeePhone(),
+                      textScaleFactor: 1.1,
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
                     ),
                   ],
                 ),

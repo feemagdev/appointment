@@ -52,7 +52,10 @@ class _UpdatePersonalAppointmentBodyState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Update Personal Client"),
+        title: Text(
+          "Update Personal Client",
+          textScaleFactor: 1,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -219,13 +222,18 @@ class _UpdatePersonalAppointmentBodyState
             height: MediaQuery.of(context).size.height * 0.03,
           ),
           RaisedButton(
+            color: Colors.blue[700],
+            colorBrightness: Brightness.dark,
             onPressed: () {
               _oldAppointment.setDateAdded(DateTime.now());
               BlocProvider.of<UpdatePersonalAppointmentBloc>(context).add(
                   UpdatePersonalAppointmentButtonEvent(
                       oldAppointment: _oldAppointment));
             },
-            child: Text("Update Appointment"),
+            child: Text(
+              "Update Appointment",
+              textScaleFactor: 1.2,
+            ),
           )
         ],
       ),

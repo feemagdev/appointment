@@ -29,7 +29,10 @@ class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Personal Clients"),
+        title: Text(
+          "Personal Clients",
+          textScaleFactor: 1,
+        ),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -38,6 +41,7 @@ class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blue[700],
         child: Icon(Icons.add),
         onPressed: () {
           nvaigateToAddPersonalClientScreen(context);
@@ -130,8 +134,8 @@ class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
                         filteredClients[index].getLastName() +
                             ", " +
                             filteredClients[index].getFirstName(),
+                        textScaleFactor: 1.2,
                         style: TextStyle(
-                          fontSize: 16.0,
                           color: Colors.black,
                         ),
                       ),
@@ -140,8 +144,8 @@ class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
                       ),
                       Text(
                         filteredClients[index].getPhone().toLowerCase(),
+                        textScaleFactor: 1.1,
                         style: TextStyle(
-                          fontSize: 14.0,
                           color: Colors.grey,
                         ),
                       ),
