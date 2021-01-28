@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:appointment/Models/company_model.dart';
 import 'package:appointment/Models/employee_model.dart';
 import 'package:appointment/Screens/view_business_appointment_screen.dart';
@@ -8,10 +10,9 @@ import 'package:appointment/screens/view_company_screen.dart';
 import 'package:appointment/screens/view_employee_screen.dart';
 import 'package:appointment/screens/view_personal_appointment_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/services.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const String routeName = 'dashboard_screen';
@@ -32,40 +33,39 @@ class DashboardBody extends StatefulWidget {
 class _DashboardBodyState extends State<DashboardBody> {
   @override
   Widget build(BuildContext context) {
-    var brightness = SchedulerBinding.instance.window.platformBrightness;
-    bool isDarkModeOn = brightness == Brightness.dark;
+    if (Platform.isIOS) {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+          statusBarColor: Colors.blue[700],
+          statusBarIconBrightness: Brightness.dark));
+    }
     return Scaffold(
-        body: AnnotatedRegion<SystemUiOverlayStyle>(
-      value:
-          isDarkModeOn ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
-      child: Stack(
-        children: [
-          BlocListener<DashboardBloc, DashboardState>(
-            listener: (context, state) {
-              if (state is PersonalAppointmentScreenNavigationState) {
-                navigateToPersonalAppointmentScreen(context, state.employees);
-              } else if (state is BusinessAppointmentScreenNavigationState) {
-                navigateToBusinessAppointmentScreen(context, state.employees);
-              } else if (state is GetCompanyDetailState) {
-                _navigateToCompanyScreen(context, state.company);
+        body: Stack(
+      children: [
+        BlocListener<DashboardBloc, DashboardState>(
+          listener: (context, state) {
+            if (state is PersonalAppointmentScreenNavigationState) {
+              navigateToPersonalAppointmentScreen(context, state.employees);
+            } else if (state is BusinessAppointmentScreenNavigationState) {
+              navigateToBusinessAppointmentScreen(context, state.employees);
+            } else if (state is GetCompanyDetailState) {
+              _navigateToCompanyScreen(context, state.company);
+            }
+          },
+          child: BlocBuilder<DashboardBloc, DashboardState>(
+            builder: (context, state) {
+              if (state is DashboardInitial) {
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: _dashboardUI(),
+                );
+              } else if (state is DashboardLoadingState) {
+                return Center(child: CircularProgressIndicator());
               }
+              return Container();
             },
-            child: BlocBuilder<DashboardBloc, DashboardState>(
-              builder: (context, state) {
-                if (state is DashboardInitial) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: _dashboardUI(),
-                  );
-                } else if (state is DashboardLoadingState) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return Container();
-              },
-            ),
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     )
         // This trailing comma makes auto-formatting nicer for build methods.
         );
