@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:appointment/Models/company_model.dart';
 import 'package:appointment/Models/employee_model.dart';
 import 'package:appointment/Screens/view_business_appointment_screen.dart';
@@ -16,8 +14,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const String routeName = 'dashboard_screen';
+
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+        statusBarBrightness:
+            Brightness.light // Dark == white status bar -- for IOS.
+        ));
     return BlocProvider(
       create: (context) => DashboardBloc(),
       child: DashboardBody(),
@@ -33,12 +36,6 @@ class DashboardBody extends StatefulWidget {
 class _DashboardBodyState extends State<DashboardBody> {
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS) {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarColor: Colors.blue[700],
-          statusBarBrightness: Brightness.light,
-          statusBarIconBrightness: Brightness.light));
-    }
     return Scaffold(
         body: Stack(
       children: [
