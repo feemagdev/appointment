@@ -8,6 +8,7 @@ import 'package:appointment/screens/view_company_screen.dart';
 import 'package:appointment/screens/view_employee_screen.dart';
 import 'package:appointment/screens/view_personal_appointment_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
@@ -31,9 +32,12 @@ class DashboardBody extends StatefulWidget {
 class _DashboardBodyState extends State<DashboardBody> {
   @override
   Widget build(BuildContext context) {
+    var brightness = SchedulerBinding.instance.window.platformBrightness;
+    bool isDarkModeOn = brightness == Brightness.dark;
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value:
+          isDarkModeOn ? SystemUiOverlayStyle.dark : SystemUiOverlayStyle.light,
       child: Stack(
         children: [
           BlocListener<DashboardBloc, DashboardState>(
