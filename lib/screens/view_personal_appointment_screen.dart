@@ -44,117 +44,115 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
   @override
   Widget build(BuildContext context) {
     _employees = BlocProvider.of<PersonalAppointmentBloc>(context).employees;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Personal Appointments",
-            textScaleFactor: 1.0,
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              navigateToDashboardScreen(context);
-            },
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Personal Appointments",
+          textScaleFactor: 1.0,
         ),
-        persistentFooterButtons: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _threeItemPopup(),
-                /*Row(
-                  children: [
-                    RaisedButton(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            navigateToDashboardScreen(context);
+          },
+        ),
+      ),
+      persistentFooterButtons: [
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _threeItemPopup(),
+              /*Row(
+                children: [
+                  RaisedButton(
+                    onPressed: () {
+                      if (selectedIndex == null) {
+                        infoDialogAlert("Please select an appointment");
+                      } else {
+                        print("send confirmation message");
+                      }
+                    },
+                    child: Text("Text Confirmation to Record"),
+                  ), 
+                ],
+              ),*/
+              Row(
+                children: [
+                  IconButton(
+                      icon: Icon(
+                        Icons.delete_outlined,
+                        color: Colors.red,
+                      ),
                       onPressed: () {
                         if (selectedIndex == null) {
                           infoDialogAlert("Please select an appointment");
                         } else {
-                          print("send confirmation message");
+                          warningDialogAlert(
+                              "Are you sure to delete that record ?",
+                              _selectedAppointment.getAppointmentID());
                         }
-                      },
-                      child: Text("Text Confirmation to Record"),
-                    ), 
-                  ],
-                ),*/
-                Row(
-                  children: [
-                    IconButton(
-                        icon: Icon(
-                          Icons.delete_outlined,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {
-                          if (selectedIndex == null) {
-                            infoDialogAlert("Please select an appointment");
-                          } else {
-                            warningDialogAlert(
-                                "Are you sure to delete that record ?",
-                                _selectedAppointment.getAppointmentID());
-                          }
-                        }),
-                    IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.green[300],
-                        ),
-                        onPressed: () {
-                          if (selectedIndex == null) {
-                            infoDialogAlert("Please select an appointment");
-                          } else {
-                            navigateToUpdatePersonalAppointmentScreen(context);
-                          }
-                        }),
-                    IconButton(
-                        icon: Icon(
-                          Icons.add,
-                          color: Colors.blue,
-                        ),
-                        onPressed: () {
-                          navigateToAddAppointmentScreen(context);
-                        }),
-                  ],
-                ),
-              ],
-            ),
-          )
-        ],
-        body: Column(
-          children: [
-            _viewPersonalAppointmentUI(),
-            BlocListener<PersonalAppointmentBloc, PersonalAppointmentState>(
-              listener: (context, state) {
-                if (state is PersonalAppointmentDeletedSuccessfully) {
-                  successDialogAlert("Record deleted successfully");
-                }
-              },
-              child: BlocBuilder<PersonalAppointmentBloc,
-                  PersonalAppointmentState>(
-                builder: (context, state) {
-                  if (state is PersonalAppointmentInitial) {
-                    return Container();
-                  } else if (state is GetPersonalAppointmentDataState) {
-                    _appointments = state.appointments;
-                    _personalClients = state.clients;
-                    return Container(
-                      child: Expanded(child: _appointmentListViewBuilder()),
-                    );
-                  } else if (state is NoPersonalAppointmentBookedState) {
-                    return Center(
-                      child: Text("No Appointment Booked"),
-                    );
-                  } else if (state is PersonalAppointmentLoadingState) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-
-                  return Container();
-                },
+                      }),
+                  IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.green[300],
+                      ),
+                      onPressed: () {
+                        if (selectedIndex == null) {
+                          infoDialogAlert("Please select an appointment");
+                        } else {
+                          navigateToUpdatePersonalAppointmentScreen(context);
+                        }
+                      }),
+                  IconButton(
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.blue,
+                      ),
+                      onPressed: () {
+                        navigateToAddAppointmentScreen(context);
+                      }),
+                ],
               ),
+            ],
+          ),
+        )
+      ],
+      body: Column(
+        children: [
+          _viewPersonalAppointmentUI(),
+          BlocListener<PersonalAppointmentBloc, PersonalAppointmentState>(
+            listener: (context, state) {
+              if (state is PersonalAppointmentDeletedSuccessfully) {
+                successDialogAlert("Record deleted successfully");
+              }
+            },
+            child:
+                BlocBuilder<PersonalAppointmentBloc, PersonalAppointmentState>(
+              builder: (context, state) {
+                if (state is PersonalAppointmentInitial) {
+                  return Container();
+                } else if (state is GetPersonalAppointmentDataState) {
+                  _appointments = state.appointments;
+                  _personalClients = state.clients;
+                  return Container(
+                    child: Expanded(child: _appointmentListViewBuilder()),
+                  );
+                } else if (state is NoPersonalAppointmentBookedState) {
+                  return Center(
+                    child: Text("No Appointment Booked"),
+                  );
+                } else if (state is PersonalAppointmentLoadingState) {
+                  return Center(child: CircularProgressIndicator());
+                }
+
+                return Container();
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

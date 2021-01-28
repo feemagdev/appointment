@@ -10,6 +10,7 @@ import 'package:appointment/screens/view_personal_appointment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/services.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const String routeName = 'dashboard_screen';
@@ -30,9 +31,10 @@ class DashboardBody extends StatefulWidget {
 class _DashboardBodyState extends State<DashboardBody> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          body: Stack(
+    return Scaffold(
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Stack(
         children: [
           BlocListener<DashboardBloc, DashboardState>(
             listener: (context, state) {
@@ -59,10 +61,10 @@ class _DashboardBodyState extends State<DashboardBody> {
             ),
           )
         ],
-      )
-          // This trailing comma makes auto-formatting nicer for build methods.
-          ),
-    );
+      ),
+    )
+        // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 
   Widget _dashboardUI() {
