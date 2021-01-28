@@ -58,49 +58,47 @@ class _CompanyBodyState extends State<CompanyBody> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Company Form",
-            textScaleFactor: 1,
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Company Form",
+          textScaleFactor: 1,
+        ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            _navigateToDashboardScreen(context);
+          },
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
             onPressed: () {
-              _navigateToDashboardScreen(context);
+              if (_formKey.currentState.validate()) {
+                Company newCompany = Company(
+                    id: company == null ? null : company.id,
+                    phone: _phoneController.text,
+                    company: _companyController.text,
+                    address: _addressController.text,
+                    city: _cityController.text,
+                    state: _stateController.text,
+                    zipcode: _zipcodeController.text,
+                    aptConfirmMsg: _aptConfirmMsgController.text,
+                    aptCancelMsg: _aptCancelMsgController.text,
+                    employeeCancelMsg: _employeeCancelMsgController.text,
+                    aptReminderMsg: _aptReminderMsgController.text);
+                company = newCompany;
+                BlocProvider.of<CompanyBloc>(context)
+                    .add(SaveCompanyEvent(company: newCompany));
+              }
             },
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.save),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  Company newCompany = Company(
-                      id: company == null ? null : company.id,
-                      phone: _phoneController.text,
-                      company: _companyController.text,
-                      address: _addressController.text,
-                      city: _cityController.text,
-                      state: _stateController.text,
-                      zipcode: _zipcodeController.text,
-                      aptConfirmMsg: _aptConfirmMsgController.text,
-                      aptCancelMsg: _aptCancelMsgController.text,
-                      employeeCancelMsg: _employeeCancelMsgController.text,
-                      aptReminderMsg: _aptReminderMsgController.text);
-                  company = newCompany;
-                  BlocProvider.of<CompanyBloc>(context)
-                      .add(SaveCompanyEvent(company: newCompany));
-                }
-              },
-            )
-          ],
-        ),
-        body: Stack(
-          children: [
-            _bloc(),
-          ],
-        ),
+          )
+        ],
+      ),
+      body: Stack(
+        children: [
+          _bloc(),
+        ],
       ),
     );
   }
