@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:appointment/Models/company_model.dart';
 import 'package:appointment/Models/employee_model.dart';
 import 'package:appointment/Screens/view_business_appointment_screen.dart';
@@ -17,10 +19,6 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-        statusBarBrightness:
-            Brightness.light // Dark == white status bar -- for IOS.
-        ));
     return BlocProvider(
       create: (context) => DashboardBloc(),
       child: DashboardBody(),
@@ -37,33 +35,38 @@ class _DashboardBodyState extends State<DashboardBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-      children: [
-        BlocListener<DashboardBloc, DashboardState>(
-          listener: (context, state) {
-            if (state is PersonalAppointmentScreenNavigationState) {
-              navigateToPersonalAppointmentScreen(context, state.employees);
-            } else if (state is BusinessAppointmentScreenNavigationState) {
-              navigateToBusinessAppointmentScreen(context, state.employees);
-            } else if (state is GetCompanyDetailState) {
-              _navigateToCompanyScreen(context, state.company);
-            }
-          },
-          child: BlocBuilder<DashboardBloc, DashboardState>(
-            builder: (context, state) {
-              if (state is DashboardInitial) {
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: _dashboardUI(),
-                );
-              } else if (state is DashboardLoadingState) {
-                return Center(child: CircularProgressIndicator());
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+      value: Platform.isIOS
+          ? SystemUiOverlayStyle.dark
+          : SystemUiOverlayStyle.light,
+      child: Stack(
+        children: [
+          BlocListener<DashboardBloc, DashboardState>(
+            listener: (context, state) {
+              if (state is PersonalAppointmentScreenNavigationState) {
+                navigateToPersonalAppointmentScreen(context, state.employees);
+              } else if (state is BusinessAppointmentScreenNavigationState) {
+                navigateToBusinessAppointmentScreen(context, state.employees);
+              } else if (state is GetCompanyDetailState) {
+                _navigateToCompanyScreen(context, state.company);
               }
-              return Container();
             },
-          ),
-        )
-      ],
+            child: BlocBuilder<DashboardBloc, DashboardState>(
+              builder: (context, state) {
+                if (state is DashboardInitial) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: _dashboardUI(),
+                  );
+                } else if (state is DashboardLoadingState) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return Container();
+              },
+            ),
+          )
+        ],
+      ),
     )
         // This trailing comma makes auto-formatting nicer for build methods.
         );
