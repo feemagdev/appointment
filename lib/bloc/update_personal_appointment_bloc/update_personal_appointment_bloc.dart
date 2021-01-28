@@ -43,12 +43,14 @@ class UpdatePersonalAppointmentBloc extends Bloc<UpdatePersonalAppointmentEvent,
     } else if (event is UpdatePersonalAppointmentButtonEvent) {
       yield UpdatePersonalAppointmentLoadingState();
       Map<String, dynamic> data = {
-        'date_added': event.oldAppointment.getDateAdded(),
+        'date_added': event.oldAppointment.getDateAdded().toIso8601String(),
         'appointment_date':
-            changeDate(event.oldAppointment.getAppointmentDate()),
+            changeDate(event.oldAppointment.getAppointmentDate())
+                .toIso8601String(),
         'appointment_time': changeTime(TimeOfDay(
-            hour: event.oldAppointment.getAppointmentTime().hour,
-            minute: event.oldAppointment.getAppointmentTime().minute)),
+                hour: event.oldAppointment.getAppointmentTime().hour,
+                minute: event.oldAppointment.getAppointmentTime().minute))
+            .toIso8601String(),
         'client_id': event.oldAppointment.getClientID(),
         'employee_id': event.oldAppointment.getEmployeeID(),
         'confirmed': event.oldAppointment.getStatus()
@@ -57,6 +59,8 @@ class UpdatePersonalAppointmentBloc extends Bloc<UpdatePersonalAppointmentEvent,
           .updateAppointment(data, oldAppointment.getAppointmentID());
       if (check) {
         yield PersonalAppointmentUpdatedSuccessfullyState();
+      } else {
+        print("not deleted");
       }
     }
   }

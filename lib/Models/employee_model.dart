@@ -1,14 +1,14 @@
 class Employee {
-  String _employeeID;
+  int _employeeID;
   String _employeeName;
   String _employeePhone;
 
-  Employee.fromMap(Map snapshot, String employeeID)
-      : _employeeID = employeeID,
-        _employeeName = snapshot['employee_name'],
-        _employeePhone = snapshot['employee_phone'];
+  Employee.fromMap(Map snapshot)
+      : _employeeID = snapshot['id'],
+        _employeeName = snapshot['name'],
+        _employeePhone = snapshot['phone'];
 
-  String getEmployeeID() {
+  int getEmployeeID() {
     return _employeeID;
   }
 

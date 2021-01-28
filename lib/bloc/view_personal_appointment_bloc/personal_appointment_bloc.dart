@@ -23,8 +23,9 @@ class PersonalAppointmentBloc
   ) async* {
     if (event is GetPersonalAppointmentDataEvent) {
       yield PersonalAppointmentLoadingState();
-      List<PersonalAppointment> appointments =
-          await getPersonalAppointment(event.date, event.employeeID);
+
+      List<PersonalAppointment> appointments = await getPersonalAppointment(
+          _changeDate(event.date).toIso8601String(), event.employeeID);
 
       if (appointments != null) {
         List<PersonalClient> clients = List();
@@ -44,15 +45,10 @@ class PersonalAppointmentBloc
     }
   }
 
-  DateTime changeDate(DateTime appointmentDate) {
-    return DateTime(appointmentDate.year, appointmentDate.month,
-        appointmentDate.day, 12, 0, 0, 0, 0);
-  }
-
   Future<List<PersonalAppointment>> getPersonalAppointment(
-      DateTime date, String employeeID) async {
+      String date, int employeeID) async {
     return await PersonalAppointmentRepository.defaultConstructor()
-        .getEmployeePersonalAppointments(changeDate(date), employeeID);
+        .getEmployeePersonalAppointments(date, employeeID);
   }
 
   Future<List<PersonalClient>> getPersonalClient(
@@ -63,5 +59,10 @@ class PersonalAppointmentBloc
           .getClientData(appointment.getClientID()));
     });
     return clients;
+  }
+
+  DateTime _changeDate(DateTime appointmentDate) {
+    return DateTime(appointmentDate.year, appointmentDate.month,
+        appointmentDate.day, 12, 0, 0, 0, 0);
   }
 }

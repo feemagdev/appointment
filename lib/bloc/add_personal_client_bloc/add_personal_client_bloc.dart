@@ -25,7 +25,7 @@ class AddPersonalClientBloc
         'address': event.address,
         'city': event.city,
         'state': event.state,
-        'zip_code': event.zipCode
+        'zipcode': event.zipCode
       };
       PersonalClient client =
           await PersonalClientRepository.defaultConstructor().addClient(data);

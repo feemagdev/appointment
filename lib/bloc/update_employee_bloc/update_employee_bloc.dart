@@ -21,8 +21,8 @@ class UpdateEmployeeBloc
     if (event is UpdateEmployeeButtonEvent) {
       yield UpdateEmployeeLoadingState();
       Map<String, dynamic> data = {
-        'employee_name': event.employee.getEmployeeName(),
-        'employee_phone': event.employee.getEmployeePhone(),
+        'name': event.employee.getEmployeeName(),
+        'phone': event.employee.getEmployeePhone(),
       };
       bool check = await EmployeeRepository.defaultConstructor()
           .updateEmployee(data, employee.getEmployeeID());

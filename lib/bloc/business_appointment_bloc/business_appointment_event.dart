@@ -4,13 +4,13 @@ part of 'business_appointment_bloc.dart';
 abstract class BusinessAppointmentEvent {}
 
 class GetBusinessAppointmentDataEvent extends BusinessAppointmentEvent {
-  final String employeeID;
+  final int employeeID;
   final DateTime date;
   GetBusinessAppointmentDataEvent(
       {@required this.date, @required this.employeeID});
 }
 
 class DeleteBusinessAppointmentEvent extends BusinessAppointmentEvent {
-  final String appointmentID;
+  final int appointmentID;
   DeleteBusinessAppointmentEvent({@required this.appointmentID});
 }

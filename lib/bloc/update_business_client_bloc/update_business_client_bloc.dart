@@ -27,7 +27,7 @@ class UpdateBusinessClientBloc
         'address': event.bClient.getAddress(),
         'city': event.bClient.getCity(),
         'state': event.bClient.getState(),
-        'zip_code': event.bClient.getZipCode(),
+        'zipcode': event.bClient.getZipCode(),
       };
       bool check = await BusinessClientRepository.defaultConstructor()
           .updateBusinessClient(data, event.bClient.getBClientID());

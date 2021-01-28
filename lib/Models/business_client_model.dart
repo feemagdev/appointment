@@ -1,5 +1,5 @@
 class BusinessClient {
-  String _bClientID;
+  int _bClientID;
   String _phone;
   String _company;
   String _contact;
@@ -8,17 +8,17 @@ class BusinessClient {
   String _state;
   String _zipCode;
 
-  BusinessClient.fromMap(Map snapshot, String bClientID)
-      : _bClientID = bClientID,
+  BusinessClient.fromMap(Map snapshot)
+      : _bClientID = snapshot['id'],
         _phone = snapshot['phone'],
         _company = snapshot['company'],
         _contact = snapshot['contact'],
         _address = snapshot['address'],
         _city = snapshot['city'],
         _state = snapshot['state'],
-        _zipCode = snapshot['zip_code'];
+        _zipCode = snapshot['zipcode'];
 
-  String getBClientID() {
+  int getBClientID() {
     return _bClientID;
   }
 

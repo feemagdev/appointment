@@ -6,3 +6,5 @@ abstract class DashboardEvent {}
 class PersonalAppointmentScreenNavigationEvent extends DashboardEvent {}
 
 class BusinessAppointmentScreenNavigationEvent extends DashboardEvent {}
+
+class GetCompanyDetailEvent extends DashboardEvent {}

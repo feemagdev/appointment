@@ -25,7 +25,7 @@ class AddBusinessClientBloc
         'address': event.address,
         'city': event.city,
         'state': event.state,
-        'zip_code': event.zipCode
+        'zipcode': event.zipCode
       };
       BusinessClient bClient =
           await BusinessClientRepository.defaultConstructor()

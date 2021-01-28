@@ -59,6 +59,13 @@ class _VeiwEmployeeBodyState extends State<VeiwEmployeeBody> {
                   return listOfEmployees();
                 } else if (state is ViewEmployeeLoadingState) {
                   return Center(child: CircularProgressIndicator());
+                } else if (state is NoEmployeeFoundState) {
+                  return Center(
+                    child: Text(
+                      "No Employee Registered Yet",
+                      textScaleFactor: 1.2,
+                    ),
+                  );
                 }
                 return Container();
               },

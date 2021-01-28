@@ -4,14 +4,14 @@ part of 'personal_appointment_bloc.dart';
 abstract class PersonalAppointmentEvent {}
 
 class GetPersonalAppointmentDataEvent extends PersonalAppointmentEvent {
-  final String employeeID;
+  final int employeeID;
   final DateTime date;
   GetPersonalAppointmentDataEvent(
       {@required this.employeeID, @required this.date});
 }
 
 class DeletePersonalAppointmentEvent extends PersonalAppointmentEvent {
-  final String appointmentID;
+  final int appointmentID;
 
   DeletePersonalAppointmentEvent({@required this.appointmentID});
 }

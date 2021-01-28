@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:appointment/Models/company_model.dart';
 import 'package:appointment/Models/employee_model.dart';
+import 'package:appointment/Repositories/company_repository.dart';
 import 'package:appointment/Repositories/employee_repository.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
@@ -33,6 +35,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       } else {
         yield BusinessAppointmentScreenNavigationState(employees: employees);
       }
+    } else if (event is GetCompanyDetailEvent) {
+      yield DashboardLoadingState();
+      Company company =
+          await CompanyRepository.defaultConstructor().getCompanyDetails();
+
+      yield GetCompanyDetailState(company: company);
     }
   }
 

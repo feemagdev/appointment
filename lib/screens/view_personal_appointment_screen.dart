@@ -52,7 +52,6 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
             textScaleFactor: 1.0,
           ),
           leading: IconButton(
-            iconSize: 20,
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               navigateToDashboardScreen(context);
@@ -189,7 +188,14 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
           decoration: BoxDecoration(
             color: selectedIndex == index ? Colors.blue[50] : Colors.white,
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Color.fromARGB(100, 112, 112, 112)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(0, 3), // changes position of shadow
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -404,7 +410,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
     });
   }
 
-  warningDialogAlert(String message, String appointmentID) async {
+  warningDialogAlert(String message, int appointmentID) async {
     await Alert(
       context: context,
       type: AlertType.warning,

@@ -219,13 +219,18 @@ class _UpdateBusinessAppointmentBodyState
             height: MediaQuery.of(context).size.height * 0.03,
           ),
           RaisedButton(
+            color: Colors.blue[700],
+            colorBrightness: Brightness.dark,
             onPressed: () {
               _oldBAppointment.setDateAdded(DateTime.now());
               BlocProvider.of<UpdateBusinessAppointmentBloc>(context).add(
                   UpdateBusinessAppointmentButtonEvent(
                       oldBAppointment: _oldBAppointment));
             },
-            child: Text("Update Appointment"),
+            child: Text(
+              "Update Appointment",
+              textScaleFactor: 1.2,
+            ),
           )
         ],
       ),

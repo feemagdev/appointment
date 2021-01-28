@@ -1,5 +1,6 @@
 import 'package:appointment/Models/business_appointment_model.dart';
 import 'package:appointment/Models/business_client_model.dart';
+import 'package:appointment/Models/company_model.dart';
 import 'package:appointment/Models/employee_model.dart';
 import 'package:appointment/Models/personal_appointment_model.dart';
 import 'package:appointment/Models/personal_client_model.dart';
@@ -17,6 +18,7 @@ import 'package:appointment/screens/add_personal_client_screen.dart';
 import 'package:appointment/screens/dashboard_screen.dart';
 import 'package:appointment/screens/update_personal_appointment_screen.dart';
 import 'package:appointment/screens/veiw_personal_client_screen.dart';
+import 'package:appointment/screens/view_company_screen.dart';
 import 'package:appointment/screens/view_employee_screen.dart';
 import 'package:appointment/screens/view_personal_appointment_screen.dart';
 import 'package:flutter/material.dart';
@@ -91,6 +93,12 @@ class RouteGenerator {
                   oldBAppointment: oldBAppointment,
                   oldBClient: oldBClient,
                   oldEmployee: oldEmployee,
+                ));
+      case CompanyScreen.routeName:
+        Company company = args;
+        return MaterialPageRoute(
+            builder: (_) => CompanyScreen(
+                  company: company,
                 ));
       default:
         // If there is no such named route in the switch statement, e.g. /third

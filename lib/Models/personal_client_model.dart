@@ -1,5 +1,5 @@
 class PersonalClient {
-  String _clientID;
+  int _id;
   String _phone;
   String _lastName;
   String _firstName;
@@ -8,18 +8,18 @@ class PersonalClient {
   String _state;
   String _zipCode;
 
-  PersonalClient.fromMap(Map snapshot, String clientID)
-      : _clientID = clientID,
+  PersonalClient.fromMap(Map snapshot)
+      : _id = snapshot['id'],
         _phone = snapshot['phone'],
         _lastName = snapshot['last_name'],
         _firstName = snapshot['first_name'],
         _address = snapshot['address'],
         _city = snapshot['city'],
         _state = snapshot['state'],
-        _zipCode = snapshot['zip_code'];
+        _zipCode = snapshot['zipcode'];
 
-  String getClientID() {
-    return _clientID;
+  int getClientID() {
+    return _id;
   }
 
   String getPhone() {

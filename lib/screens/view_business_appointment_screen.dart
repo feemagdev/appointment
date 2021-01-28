@@ -185,11 +185,7 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
           width: double.infinity,
           decoration: BoxDecoration(
             color: selectedIndex == index ? Colors.blue[50] : Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(10)),
+            borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.5),
@@ -415,7 +411,7 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
     });
   }
 
-  warningDialogAlert(String message, String appointmentID) async {
+  warningDialogAlert(String message, int appointmentID) async {
     await Alert(
       context: context,
       type: AlertType.warning,

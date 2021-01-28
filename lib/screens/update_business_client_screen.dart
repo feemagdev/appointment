@@ -228,22 +228,23 @@ class _UpdateBusinessClientBodyState extends State<UpdateBusinessClientBody> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.50,
-                  child: RaisedButton(
+                RaisedButton(
+                    color: Colors.blue[700],
+                    colorBrightness: Brightness.dark,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 15, right: 15, top: 10, bottom: 10),
                       child: Text(
                         "Update Client",
-                        style: TextStyle(fontSize: 20),
+                        textScaleFactor: 1.2,
                       ),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          BlocProvider.of<UpdateBusinessClientBloc>(context)
-                              .add(UpdateBusinessClientButtonEvent(
-                                  bClient: _bClient));
-                        }
-                      }),
-                )
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        BlocProvider.of<UpdateBusinessClientBloc>(context).add(
+                            UpdateBusinessClientButtonEvent(bClient: _bClient));
+                      }
+                    })
               ],
             ),
           )),

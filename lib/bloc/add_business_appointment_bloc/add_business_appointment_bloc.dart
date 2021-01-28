@@ -40,9 +40,11 @@ class AddBusinessAppointmentBloc
 
       if (_validation == null) {
         Map<String, dynamic> data = {
-          'date_added': event.dateAdded,
-          'appointment_date': _changeDate(event.bAppointmentDate),
-          'appointment_time': _changeTime(event.bAppointmentTime),
+          'date_added': event.dateAdded.toIso8601String(),
+          'appointment_date':
+              _changeDate(event.bAppointmentDate).toIso8601String(),
+          'appointment_time':
+              _changeTime(event.bAppointmentTime).toIso8601String(),
           'bclient_id': event.bClient.getBClientID(),
           'employee_id': event.employee.getEmployeeID(),
           'confirmed': event.confirmed

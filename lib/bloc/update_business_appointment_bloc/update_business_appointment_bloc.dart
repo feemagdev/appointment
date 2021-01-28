@@ -43,12 +43,14 @@ class UpdateBusinessAppointmentBloc extends Bloc<UpdateBusinessAppointmentEvent,
     } else if (event is UpdateBusinessAppointmentButtonEvent) {
       yield UpdateBusinessAppointmentLoadingState();
       Map<String, dynamic> data = {
-        'date_added': event.oldBAppointment.getDateAdded(),
+        'date_added': event.oldBAppointment.getDateAdded().toIso8601String(),
         'appointment_date':
-            _changeDate(event.oldBAppointment.getAppointmentDate()),
+            _changeDate(event.oldBAppointment.getAppointmentDate())
+                .toIso8601String(),
         'appointment_time': _changeTime(TimeOfDay(
-            hour: event.oldBAppointment.getAppointmentTime().hour,
-            minute: event.oldBAppointment.getAppointmentTime().minute)),
+                hour: event.oldBAppointment.getAppointmentTime().hour,
+                minute: event.oldBAppointment.getAppointmentTime().minute))
+            .toIso8601String(),
         'bclient_id': event.oldBAppointment.getBClientID(),
         'employee_id': event.oldBAppointment.getEmployeeID(),
         'confirmed': event.oldBAppointment.getStatus()

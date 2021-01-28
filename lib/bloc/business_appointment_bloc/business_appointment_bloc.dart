@@ -50,7 +50,7 @@ class BusinessAppointmentBloc
   }
 
   Future<List<BusinessAppointment>> getBusinessAppointment(
-      DateTime date, String employeeID) async {
+      DateTime date, int employeeID) async {
     return await BusinessAppointmentRepository.defaultConstructor()
         .getEmployeeBusinessAppointments(changeDate(date), employeeID);
   }

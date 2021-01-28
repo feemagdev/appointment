@@ -1,8 +1,10 @@
+import 'package:appointment/Models/company_model.dart';
 import 'package:appointment/Models/employee_model.dart';
 import 'package:appointment/Screens/view_business_appointment_screen.dart';
 import 'package:appointment/Screens/view_business_client_screen.dart';
 import 'package:appointment/bloc/dashboard_bloc/dashboard_bloc.dart';
 import 'package:appointment/screens/veiw_personal_client_screen.dart';
+import 'package:appointment/screens/view_company_screen.dart';
 import 'package:appointment/screens/view_employee_screen.dart';
 import 'package:appointment/screens/view_personal_appointment_screen.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,8 @@ class _DashboardBodyState extends State<DashboardBody> {
                 navigateToPersonalAppointmentScreen(context, state.employees);
               } else if (state is BusinessAppointmentScreenNavigationState) {
                 navigateToBusinessAppointmentScreen(context, state.employees);
+              } else if (state is GetCompanyDetailState) {
+                _navigateToCompanyScreen(context, state.company);
               }
             },
             child: BlocBuilder<DashboardBloc, DashboardState>(
@@ -269,7 +273,8 @@ class _DashboardBodyState extends State<DashboardBody> {
             padding: const EdgeInsets.all(10.0),
             child: GestureDetector(
               onTap: () {
-                //navigateToViewEmployeeScreen(context);
+                BlocProvider.of<DashboardBloc>(context)
+                    .add(GetCompanyDetailEvent());
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -407,5 +412,10 @@ class _DashboardBodyState extends State<DashboardBody> {
     Navigator.pushReplacementNamed(
         context, ViewBusinessAppointmentScreen.routeName,
         arguments: employees);
+  }
+
+  void _navigateToCompanyScreen(BuildContext context, Company company) {
+    Navigator.pushReplacementNamed(context, CompanyScreen.routeName,
+        arguments: company);
   }
 }

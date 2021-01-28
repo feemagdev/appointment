@@ -1,22 +1,22 @@
 class PersonalAppointment {
-  String _appointmentID;
+  int _appointmentID;
   DateTime _dateAdded;
-  String _employeeID;
-  String _clientID;
+  int _employeeID;
+  int _clientID;
   DateTime _appointmentDate;
   DateTime _appointmentTime;
   bool _confirmed;
 
-  PersonalAppointment.fromMap(Map snapshot, String appointmentID)
-      : _appointmentID = appointmentID,
-        _dateAdded = snapshot['date_added'].toDate(),
+  PersonalAppointment.fromMap(Map snapshot)
+      : _appointmentID = snapshot['id'],
+        _dateAdded = DateTime.tryParse(snapshot['date_added']),
         _employeeID = snapshot['employee_id'],
         _clientID = snapshot['client_id'],
-        _appointmentDate = snapshot['appointment_date'].toDate(),
-        _appointmentTime = snapshot['appointment_time'].toDate(),
+        _appointmentDate = DateTime.tryParse(snapshot['appointment_date']),
+        _appointmentTime = DateTime.tryParse(snapshot['appointment_time']),
         _confirmed = snapshot['confirmed'];
 
-  String getAppointmentID() {
+  int getAppointmentID() {
     return _appointmentID;
   }
 
@@ -24,11 +24,11 @@ class PersonalAppointment {
     return _dateAdded;
   }
 
-  String getEmployeeID() {
+  int getEmployeeID() {
     return _employeeID;
   }
 
-  String getClientID() {
+  int getClientID() {
     return _clientID;
   }
 
@@ -56,11 +56,11 @@ class PersonalAppointment {
     _confirmed = status;
   }
 
-  void setClientID(String clientID) {
+  void setClientID(int clientID) {
     _clientID = clientID;
   }
 
-  void setEmployeeID(String employeeID) {
+  void setEmployeeID(int employeeID) {
     _employeeID = employeeID;
   }
 

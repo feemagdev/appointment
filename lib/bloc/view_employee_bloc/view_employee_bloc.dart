@@ -20,7 +20,7 @@ class ViewEmployeeBloc extends Bloc<ViewEmployeeEvent, ViewEmployeeState> {
       List<Employee> employees = List();
       employees =
           await EmployeeRepository.defaultConstructor().getEmployeesList();
-      if (employees == null) {
+      if (employees == null || employees.isEmpty) {
         yield NoEmployeeFoundState();
       } else {
         yield GetEmployeesListState(employeesList: employees);

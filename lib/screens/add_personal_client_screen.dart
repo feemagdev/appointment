@@ -197,28 +197,34 @@ class _AddPersonalClientBodyState extends State<AddPersonalClientBody> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.50,
-                  child: RaisedButton(
+                RaisedButton(
+                    color: Colors.blue[700],
+                    colorBrightness: Brightness.dark,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 20,
+                        right: 20,
+                        top: 10,
+                        bottom: 10,
+                      ),
                       child: Text(
                         "Add Client",
-                        style: TextStyle(fontSize: 20),
+                        textScaleFactor: 1.2,
                       ),
-                      onPressed: () {
-                        if (_formKey.currentState.validate()) {
-                          BlocProvider.of<AddPersonalClientBloc>(context).add(
-                              AddPersonalClientButtonEvent(
-                                  phone: _phoneController.text,
-                                  lastName: _lastNameController.text,
-                                  firstName: _firstNameController.text,
-                                  address: _addressController.text,
-                                  city: _cityController.text,
-                                  state: _stateController.text,
-                                  zipCode: _zipCodeController.text));
-                        }
-                      }),
-                )
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState.validate()) {
+                        BlocProvider.of<AddPersonalClientBloc>(context).add(
+                            AddPersonalClientButtonEvent(
+                                phone: _phoneController.text,
+                                lastName: _lastNameController.text,
+                                firstName: _firstNameController.text,
+                                address: _addressController.text,
+                                city: _cityController.text,
+                                state: _stateController.text,
+                                zipCode: _zipCodeController.text));
+                      }
+                    })
               ],
             ),
           )),

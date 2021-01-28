@@ -27,7 +27,7 @@ class UpdatePersonalClientBloc
         'address': event.client.getAddress(),
         'city': event.client.getCity(),
         'state': event.client.getState(),
-        'zip_code': event.client.getZipCode(),
+        'zipcode': event.client.getZipCode(),
       };
       bool check = await PersonalClientRepository.defaultConstructor()
           .updateClient(data, event.client.getClientID());

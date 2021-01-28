@@ -16,3 +16,8 @@ class BusinessAppointmentScreenNavigationState extends DashboardState {
 }
 
 class DashboardLoadingState extends DashboardState {}
+
+class GetCompanyDetailState extends DashboardState {
+  final Company company;
+  GetCompanyDetailState({@required this.company});
+}
