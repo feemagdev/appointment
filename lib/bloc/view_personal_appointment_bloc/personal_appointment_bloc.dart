@@ -28,7 +28,7 @@ class PersonalAppointmentBloc
           _changeDate(event.date).toIso8601String(), event.employeeID);
 
       if (appointments != null) {
-        List<PersonalClient> clients = List();
+        List<PersonalClient> clients = [];
         clients = await getPersonalClient(appointments);
         yield GetPersonalAppointmentDataState(
             appointments: appointments, clients: clients);
@@ -53,7 +53,7 @@ class PersonalAppointmentBloc
 
   Future<List<PersonalClient>> getPersonalClient(
       List<PersonalAppointment> appointments) async {
-    List<PersonalClient> clients = List();
+    List<PersonalClient> clients = [];
     await Future.forEach(appointments, (PersonalAppointment appointment) async {
       clients.add(await PersonalClientRepository.defaultConstructor()
           .getClientData(appointment.getClientID()));

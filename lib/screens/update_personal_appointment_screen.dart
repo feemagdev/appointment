@@ -40,8 +40,8 @@ class _UpdatePersonalAppointmentBodyState
     extends State<UpdatePersonalAppointmentBody> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
-  List<Employee> _employees = List();
-  List<PersonalClient> _clients = List();
+  List<Employee> _employees = [];
+  List<PersonalClient> _clients = [];
   PersonalAppointment _oldAppointment;
   Employee _selectedEmployee;
   PersonalClient _selectedClient;
@@ -221,9 +221,14 @@ class _UpdatePersonalAppointmentBodyState
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.03,
           ),
-          RaisedButton(
-            color: Colors.blue[700],
-            colorBrightness: Brightness.dark,
+          ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.blue[700]),
+            ),
             onPressed: () {
               _oldAppointment.setDateAdded(DateTime.now());
               BlocProvider.of<UpdatePersonalAppointmentBloc>(context).add(

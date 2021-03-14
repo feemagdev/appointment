@@ -23,8 +23,8 @@ class ViewPersonalClientBody extends StatefulWidget {
 }
 
 class _ViewPersonalClientBodyState extends State<ViewPersonalClientBody> {
-  List<PersonalClient> clientList = List();
-  List<PersonalClient> filteredClients = List();
+  List<PersonalClient> clientList = [];
+  List<PersonalClient> filteredClients = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

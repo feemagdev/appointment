@@ -18,7 +18,7 @@ class ViewPersonalClientBloc
   ) async* {
     if (event is GetClientListEvent) {
       yield ViewPersonalClientLoadingState();
-      List<PersonalClient> clients = List();
+      List<PersonalClient> clients = [];
       clients =
           await PersonalClientRepository.defaultConstructor().getClientsList();
       if (clients == null || clients.isEmpty) {
@@ -28,7 +28,7 @@ class ViewPersonalClientBloc
       }
     } else if (event is ClientSearchingEvent) {
       List<PersonalClient> clientList = event.clientList;
-      List<PersonalClient> filtered = List();
+      List<PersonalClient> filtered = [];
       String string = event.query;
       clientList.forEach((element) {
         if (element

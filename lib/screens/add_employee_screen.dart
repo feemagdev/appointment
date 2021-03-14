@@ -98,9 +98,14 @@ class _AddEmployeeBodyState extends State<AddEmployeeBody> {
             SizedBox(
               height: 10,
             ),
-            RaisedButton(
-                color: Colors.blue[700],
-                colorBrightness: Brightness.dark,
+            ElevatedButton(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<OutlinedBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5))),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue[700]),
+                ),
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     BlocProvider.of<AddEmployeeBloc>(context).add(

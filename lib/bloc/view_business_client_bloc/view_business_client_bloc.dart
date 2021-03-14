@@ -18,7 +18,7 @@ class ViewBusinessClientBloc
   ) async* {
     if (event is GetBusinessClientListEvent) {
       yield ViewBusinessClientLoadingState();
-      List<BusinessClient> bClients = List();
+      List<BusinessClient> bClients = [];
       bClients = await BusinessClientRepository.defaultConstructor()
           .getBusinessClientsList();
       if (bClients == null || bClients.isEmpty) {
@@ -28,7 +28,7 @@ class ViewBusinessClientBloc
       }
     } else if (event is BClientSearchingEvent) {
       List<BusinessClient> bClientList = event.bClientList;
-      List<BusinessClient> filtered = List();
+      List<BusinessClient> filtered = [];
       String string = event.query;
       bClientList.forEach((element) {
         if (element.getCompany().toLowerCase().contains(string.toLowerCase()) ||

@@ -27,7 +27,7 @@ class BusinessAppointmentBloc
           await getBusinessAppointment(event.date, event.employeeID);
 
       if (appointments != null) {
-        List<BusinessClient> clients = List();
+        List<BusinessClient> clients = [];
         clients = await getBusinessClient(appointments);
         yield GetBusinessAppointmentDataState(
             bAppointments: appointments, bClients: clients);
@@ -57,7 +57,7 @@ class BusinessAppointmentBloc
 
   Future<List<BusinessClient>> getBusinessClient(
       List<BusinessAppointment> appointments) async {
-    List<BusinessClient> clients = List();
+    List<BusinessClient> clients = [];
     await Future.forEach(appointments, (BusinessAppointment appointment) async {
       print(appointment.getBClientID());
       clients.add(await BusinessClientRepository.defaultConstructor()

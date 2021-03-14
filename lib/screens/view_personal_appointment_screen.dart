@@ -372,7 +372,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
   }
 
   void navigateToUpdatePersonalAppointmentScreen(BuildContext context) {
-    List list = List();
+    List list = [];
     list.add(_selectedEmployee);
     list.add(_selectedAppointment);
     list.add(_selectedClient);
@@ -487,7 +487,7 @@ class _PersonalAppointmentBodyState extends State<PersonalAppointmentBody> {
       ));
 
   List<PopupMenuEntry<Object>> items() {
-    var list = List<PopupMenuEntry<Object>>();
+    List<PopupMenuEntry<Object>> list = [];
     list.add(
       PopupMenuItem(
         child: Text(

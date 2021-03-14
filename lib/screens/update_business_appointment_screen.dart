@@ -40,8 +40,8 @@ class _UpdateBusinessAppointmentBodyState
     extends State<UpdateBusinessAppointmentBody> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
-  List<Employee> _employees = List();
-  List<BusinessClient> _bClients = List();
+  List<Employee> _employees = [];
+  List<BusinessClient> _bClients = [];
   BusinessAppointment _oldBAppointment;
   Employee _selectedEmployee;
   BusinessClient _selectedBClient;
@@ -218,9 +218,14 @@ class _UpdateBusinessAppointmentBodyState
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.03,
           ),
-          RaisedButton(
-            color: Colors.blue[700],
-            colorBrightness: Brightness.dark,
+          ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.blue[700]),
+            ),
             onPressed: () {
               _oldBAppointment.setDateAdded(DateTime.now());
               BlocProvider.of<UpdateBusinessAppointmentBloc>(context).add(

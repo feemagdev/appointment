@@ -30,8 +30,8 @@ class UpdateBusinessAppointmentBloc extends Bloc<UpdateBusinessAppointmentEvent,
   ) async* {
     if (event is GetEmployeeAndClientDataEvent) {
       yield UpdateBusinessAppointmentLoadingState();
-      List<Employee> employeesList = List();
-      List<BusinessClient> bClientsList = List();
+      List<Employee> employeesList = [];
+      List<BusinessClient> bClientsList = [];
       employeesList =
           await EmployeeRepository.defaultConstructor().getEmployeesList();
 

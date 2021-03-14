@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:appointment/Models/company_model.dart';
 import 'package:appointment/Models/employee_model.dart';
 import 'package:appointment/Screens/view_business_appointment_screen.dart';
@@ -12,7 +10,7 @@ import 'package:appointment/screens/view_personal_appointment_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 class DashboardScreen extends StatelessWidget {
   static const String routeName = 'dashboard_screen';
@@ -36,7 +34,7 @@ class _DashboardBodyState extends State<DashboardBody> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: AnnotatedRegion<SystemUiOverlayStyle>(
-      value: Platform.isIOS
+      value: UniversalPlatform.isIOS
           ? SystemUiOverlayStyle.dark
           : SystemUiOverlayStyle.light,
       child: Stack(
@@ -96,7 +94,7 @@ class _DashboardBodyState extends State<DashboardBody> {
     return Expanded(
       child: GridView.count(
         shrinkWrap: true,
-        crossAxisCount: 2,
+        crossAxisCount: MediaQuery.of(context).size.width < 450 ? 2 : 3,
         children: [
           Padding(
             padding: const EdgeInsets.all(10.0),
@@ -123,8 +121,8 @@ class _DashboardBodyState extends State<DashboardBody> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'assets/icons/event-planner.svg',
+                    Image.asset(
+                      'assets/images/event-planner.png',
                       width: 50,
                       height: 50,
                     ),
@@ -168,8 +166,8 @@ class _DashboardBodyState extends State<DashboardBody> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'assets/icons/schedule.svg',
+                    Image.asset(
+                      'assets/images/schedule.png',
                       width: 50,
                       height: 50,
                     ),
@@ -212,8 +210,8 @@ class _DashboardBodyState extends State<DashboardBody> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'assets/icons/pclient.svg',
+                    Image.asset(
+                      'assets/images/pclient.png',
                       width: 50,
                       height: 50,
                     ),
@@ -256,8 +254,8 @@ class _DashboardBodyState extends State<DashboardBody> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'assets/icons/group.svg',
+                    Image.asset(
+                      'assets/images/group.png',
                       width: 50,
                       height: 50,
                     ),
@@ -300,8 +298,8 @@ class _DashboardBodyState extends State<DashboardBody> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'assets/icons/company.svg',
+                    Image.asset(
+                      'assets/images/company.png',
                       width: 50,
                       height: 50,
                     ),
@@ -338,8 +336,8 @@ class _DashboardBodyState extends State<DashboardBody> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      'assets/icons/employees.svg',
+                    Image.asset(
+                      'assets/images/employees.png',
                       width: 50,
                       height: 50,
                     ),

@@ -29,7 +29,7 @@ class _AddBusinessAppointmentBodyState
     extends State<AddBusinessAppointmentBody> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
-  List<Employee> employees = List();
+  List<Employee> employees = [];
   List<BusinessClient> bClients;
   Employee selectedEmployee;
   BusinessClient selectedBClient;
@@ -186,11 +186,14 @@ class _AddBusinessAppointmentBodyState
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.03,
           ),
-          RaisedButton(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-            color: Colors.blue[700],
-            colorBrightness: Brightness.dark,
+          ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.blue[700]),
+            ),
             onPressed: () {
               BlocProvider.of<AddBusinessAppointmentBloc>(context).add(
                   AddBusinessAppointmentButtonEvent(
@@ -204,6 +207,7 @@ class _AddBusinessAppointmentBodyState
             child: Text(
               "Add Business Appointment",
               textScaleFactor: 1.2,
+              style: TextStyle(color: Colors.white),
             ),
           )
         ],

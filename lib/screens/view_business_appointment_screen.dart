@@ -375,7 +375,7 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
   }
 
   void _navigateToUpdateBusinessAppointmentScreen(BuildContext context) {
-    List list = List();
+    List list = [];
     list.add(_selectedEmployee);
     list.add(_selectedBAppointment);
     list.add(_selectedBClient);
@@ -490,7 +490,7 @@ class _BusinessAppointmentBodyState extends State<BusinessAppointmentBody> {
       ));
 
   List<PopupMenuEntry<Object>> items() {
-    var list = List<PopupMenuEntry<Object>>();
+    var list = [];
     list.add(
       PopupMenuItem(
         child: Text(

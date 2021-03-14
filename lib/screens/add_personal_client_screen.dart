@@ -197,9 +197,14 @@ class _AddPersonalClientBodyState extends State<AddPersonalClientBody> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                RaisedButton(
-                    color: Colors.blue[700],
-                    colorBrightness: Brightness.dark,
+                ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5))),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue[700]),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.only(
                         left: 20,

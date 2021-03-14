@@ -22,8 +22,8 @@ class AddBusinessAppointmentBloc
   ) async* {
     if (event is GetEmployeeAndClientDataEvent) {
       yield AddBusinessAppointmentLoadingState();
-      List<Employee> employeesList = List();
-      List<BusinessClient> bClientsList = List();
+      List<Employee> employeesList = [];
+      List<BusinessClient> bClientsList = [];
       employeesList =
           await EmployeeRepository.defaultConstructor().getEmployeesList();
 

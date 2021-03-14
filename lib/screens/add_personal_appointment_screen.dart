@@ -29,7 +29,7 @@ class _AddPersonalAppointmentBodyState
     extends State<AddPersonalAppointmentBody> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
-  List<Employee> employees = List();
+  List<Employee> employees = [];
   List<PersonalClient> clients;
   Employee selectedEmployee;
   PersonalClient selectedClient;
@@ -187,9 +187,14 @@ class _AddPersonalAppointmentBodyState
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.03,
           ),
-          RaisedButton(
-            color: Colors.blue[700],
-            colorBrightness: Brightness.dark,
+          ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all<OutlinedBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5))),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.blue[700]),
+            ),
             onPressed: () {
               BlocProvider.of<AddPersonalAppointmentBloc>(context).add(
                   AddPersonalAppointmentButtonEvent(

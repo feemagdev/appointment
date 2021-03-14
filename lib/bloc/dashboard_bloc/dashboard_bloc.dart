@@ -21,7 +21,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield DashboardLoadingState();
       List<Employee> employees = await getEmployeesList();
       if (employees == null) {
-        employees = List();
+        employees = [];
         yield PersonalAppointmentScreenNavigationState(employees: employees);
       } else {
         yield PersonalAppointmentScreenNavigationState(employees: employees);
@@ -30,7 +30,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       yield DashboardLoadingState();
       List<Employee> employees = await getEmployeesList();
       if (employees == null) {
-        employees = List();
+        employees = [];
         yield BusinessAppointmentScreenNavigationState(employees: employees);
       } else {
         yield BusinessAppointmentScreenNavigationState(employees: employees);

@@ -22,8 +22,8 @@ class AddPersonalAppointmentBloc
   ) async* {
     if (event is GetEmployeeAndClientDataEvent) {
       yield AddPersonalAppointmentLoadingState();
-      List<Employee> employeesList = List();
-      List<PersonalClient> clientsList = List();
+      List<Employee> employeesList = [];
+      List<PersonalClient> clientsList = [];
       employeesList =
           await EmployeeRepository.defaultConstructor().getEmployeesList();
 

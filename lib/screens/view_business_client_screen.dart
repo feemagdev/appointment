@@ -23,8 +23,8 @@ class ViewBusinessClientBody extends StatefulWidget {
 }
 
 class _ViewBusinessClientBodyState extends State<ViewBusinessClientBody> {
-  List<BusinessClient> _businessClientList = List();
-  List<BusinessClient> _filteredBusinessClients = List();
+  List<BusinessClient> _businessClientList = [];
+  List<BusinessClient> _filteredBusinessClients = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

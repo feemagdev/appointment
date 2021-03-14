@@ -232,9 +232,14 @@ class _UpdatePersonalClientBodyState extends State<UpdatePersonalClientBody> {
                 Container(
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.50,
-                  child: RaisedButton(
-                      color: Colors.blue[700],
-                      colorBrightness: Brightness.dark,
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5))),
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.blue[700]),
+                      ),
                       child: Text(
                         "Update Client",
                         textScaleFactor: 1.2,

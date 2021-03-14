@@ -17,7 +17,7 @@ class ViewEmployeeBloc extends Bloc<ViewEmployeeEvent, ViewEmployeeState> {
   ) async* {
     if (event is GetEmployeesListEvent) {
       yield ViewEmployeeLoadingState();
-      List<Employee> employees = List();
+      List<Employee> employees = [];
       employees =
           await EmployeeRepository.defaultConstructor().getEmployeesList();
       if (employees == null || employees.isEmpty) {

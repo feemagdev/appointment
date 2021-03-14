@@ -192,9 +192,14 @@ class _AddBusinessClientBodyState extends State<AddBusinessClientBody> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.05,
                 ),
-                RaisedButton(
-                    colorBrightness: Brightness.dark,
-                    color: Colors.blue[700],
+                ElevatedButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<OutlinedBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5))),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue[700]),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
